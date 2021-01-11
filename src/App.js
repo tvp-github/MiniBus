@@ -4,10 +4,23 @@ import Header from "./commons/Header";
 import Home from "./components/Home";
 import Admin from "./components/Admin";
 import Profile from "./components/Profile";
+import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 function App() {
 	return (
 		<div className="App">
-			<Admin />
+			<Router>
+				<Switch>
+					<Route path="/profile">
+						<Profile />
+					</Route>
+					<Route path="/admin">
+						<Admin />
+					</Route>
+					<Route path="/">
+						<Home />
+					</Route>
+				</Switch>
+			</Router>
 		</div>
 	);
 }

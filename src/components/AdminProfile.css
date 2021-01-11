@@ -114,7 +114,7 @@ color: #323234;
     align-items: center !important;
     border: none !important;
     border-bottom: 1px solid #e7e7e7;
-   
+    margin-top: 20px;
   }
   .btn-tab:focus{
     background-color: #f4d21b !important;
