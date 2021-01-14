@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import colors from "../values/colors";
+import colors from "../../../values/colors";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEnvelope, faPhoneAlt } from "@fortawesome/free-solid-svg-icons";
-import Header from "../commons/Header";
-import MainContainer from "../commons/MainContainer";
-import FatFooter from "../commons/FatFooter";
+import Header from "../../../commons/Header";
+import MainContainer from "../../../commons/MainContainer";
+import FatFooter from "../../../commons/FatFooter";
 
 import 'font-awesome/css/font-awesome.min.css';
 import 'bootstrap/dist/css/bootstrap.min.css';

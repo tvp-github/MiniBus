@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import colors from "../values/colors";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBus, faSync } from "@fortawesome/free-solid-svg-icons";
+import { faBus, faSync } from "@fortawesome/free-solid-svg-icons";import {useHistory} from "react-router-dom";
 const ChooseRouteContainer = styled.div`
 	background-color: ${colors.white};
 	display: flex;
@@ -83,6 +83,12 @@ const MiniName = styled.p`
 	font-family: Open Sans;
 `;
 const ChooseRoute = ({}) => {
+	const history = useHistory();
+	const _onSubmit = (e)=>{
+		e.preventDefault();
+		console.log("Go submit");
+		history.push("/booking/step2");
+	}
 	return (
 		<ChooseRouteContainer>
 			<HorizontalContainer>
@@ -138,7 +144,7 @@ const ChooseRoute = ({}) => {
 				</VMiniContainer>
 			</HorizontalContainer>
 			<HorizontalContainer>
-				<RightButton type="submit" value="Đặt vé" />
+				<RightButton onClick={_onSubmit} type="submit" value="Đặt vé" />
 			</HorizontalContainer>
 		</ChooseRouteContainer>
 	);

@@ -1,23 +1,19 @@
 
 import React, { useState } from "react";
 import styled from "styled-components";
-import colors from "../values/colors";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEnvelope, faPhoneAlt } from "@fortawesome/free-solid-svg-icons";
-import Header from "../commons/Header";
-import MainContainer from "../commons/MainContainer";
-import FatFooter from "../commons/FatFooter";
-import ChooseRoute from "../commons/ChooseRoute";
-import HomeBackground from "../assets/images/HomeBackground.png";
-import Route from "../commons/Route";
+import Header from "../../../commons/Header";
+import MainContainer from "../../../commons/MainContainer";
+import FatFooter from "../../../commons/FatFooter";
 import Style from "./AdminProfile.css"
 import 'font-awesome/css/font-awesome.min.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Dropdown } from 'react-bootstrap';
-import OrderListComponent from '../components/AdminContentComponent/orderList'
-import EmployeeListComponent from './AdminContentComponent/employList'
-import TourListComponent from './AdminContentComponent/tourList'
-import CarListComponent from './AdminContentComponent/carList'
+import OrderListComponent from '../AdminContentComponent/orderList'
+import EmployeeListComponent from '../AdminContentComponent/employList'
+import TourListComponent from '../AdminContentComponent/tourList'
+import CarListComponent from '../AdminContentComponent/carList'
 
 const Admin = ({ }) => {
     const [hovered, setHover] = useState(

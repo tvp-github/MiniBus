@@ -8,9 +8,7 @@ const MainContainerContainer = styled.div`
 	flex-direction: column;
 	padding: 0 5%;
 	margin-top: 70px;
+	padding-bottom: 20px;
 `;
-const MainContainer = (props) => {
-	return <MainContainerContainer>{props.children}</MainContainerContainer>;
-};
 
-export default MainContainer;
+export default MainContainerContainer;

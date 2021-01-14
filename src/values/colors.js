@@ -7,4 +7,9 @@ export default {
     grey: "#494C55",
     black: "#323234",
     mid_grey: "#A7A7A7",
+    dark_grey: "#464646",
+    light_grey: "#EAEAEA",
+    light_blue: "#B2E1F0",
+    black_dark: "#323234",
+    blue: "#48B2FF",
 };

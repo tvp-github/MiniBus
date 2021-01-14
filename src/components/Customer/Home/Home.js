@@ -1,14 +1,15 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import colors from "../values/colors";
+import colors from "../../../values/colors";
+import { useHistory } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEnvelope, faPhoneAlt } from "@fortawesome/free-solid-svg-icons";
-import Header from "../commons/Header";
-import MainContainer from "../commons/MainContainer";
-import FatFooter from "../commons/FatFooter";
-import ChooseRoute from "../commons/ChooseRoute";
-import HomeBackground from "../assets/images/HomeBackground.png";
-import Route from "../commons/Route";
+import Header from "../../../commons/Header";
+import MainContainer from "../../../commons/MainContainer";
+import FatFooter from "../../../commons/FatFooter";
+import ChooseRoute from "../../../commons/ChooseRoute";
+import HomeBackground from "../../../assets/images/HomeBackground.png";
+import Route from "../../../commons/Route";
 const HeaderContainer = styled.div`
 	height: 70px;
 	background-color: ${colors.white};
@@ -56,6 +57,7 @@ const CommonRoutes = styled.p`
 	margin-top: 60px;
 `;
 const Home = ({}) => {
+	const history = useHistory();
 	return (
 		<>
 			<Header />
