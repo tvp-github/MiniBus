@@ -1,0 +1,20 @@
+const router = require('express').Router();
+
+// Middleware
+const auth = require('./middleware/auth');
+// Controllers
+const authCtrl = require('./controllers/auth');
+
+router.route('/')
+  .get()
+  .post(auth.register)
+  .put()
+  .delete();
+
+router.route('/auth')
+  .get(auth, authCtrl.verifyToken)
+  .post(authCtrl.login)
+  .put()
+  .delete();
+
+module.exports = router;
