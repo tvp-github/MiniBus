@@ -5,7 +5,7 @@ const TicketSchema = new mongoose.Schema({
     type: String,
     trim: true,
     uppercase: true,
-    maxlength: 2,
+    maxlength: 3,
     required: true
   },
   status: {
