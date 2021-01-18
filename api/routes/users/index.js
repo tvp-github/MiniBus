@@ -7,7 +7,7 @@ const authCtrl = require('./controllers/auth');
 
 router.route('/')
   .get()
-  .post(auth.register)
+  .post(auth, authCtrl.register)
   .put()
   .delete();
 

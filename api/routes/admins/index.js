@@ -4,7 +4,6 @@ const router = require('express').Router();
 const auth = require('./middleware/auth');
 // Controllers
 const authCtrl = require('./controllers/auth');
-const usersCtrl = require('./controllers/users');
 
 // Create admin (testing)
 if (process.env.NODE_ENV != 'production') {

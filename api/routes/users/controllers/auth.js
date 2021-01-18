@@ -17,6 +17,36 @@ async function verifyToken(req, res) {
   }
 }
 
+async function register(req, res) {
+  try {
+    // Check duplicate email
+    const foundedEmail = await User.find({ email: req.body.email });
+    if (foundedEmail) {
+      res.status(409).json({
+        msg: "Email already exists"
+      });
+      return;
+    }
+
+    // Hash password
+    const salt = await bcrypt.genSalt(10);
+    const hashPassword = await bcrypt.hash(password, salt);
+
+    // Create user
+    const newUser = new User({
+      ...req.body,
+      password: hashPassword
+    });
+    await newUser.save();
+
+    res.status(201).json({ user: newUser });
+  } catch (err) {
+    res.status(500).json({
+      msg: "Server Error"
+    });
+  }
+}
+
 async function login(req, res) {
   try {
     const { username, password } = await req.body;
@@ -47,5 +77,6 @@ async function login(req, res) {
 
 module.exports = {
   verifyToken,
+  register,
   login
 }
