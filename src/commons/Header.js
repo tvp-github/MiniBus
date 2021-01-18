@@ -2,8 +2,10 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import colors from "../values/colors";
 import HeaderLofo from "../assets/images/HeaderLogo.png";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEnvelope, faPhoneAlt } from "@fortawesome/free-solid-svg-icons";
+// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+// import { faEnvelope, faPhoneAlt } from "@fortawesome/free-solid-svg-icons";
+// import { Switch, Route } from 'react-router-dom';
+import { useHistory } from 'react-router';
 const HeaderContainer = styled.div`
 	height: 70px;
 	background-color: ${colors.white};
@@ -33,6 +35,7 @@ const TopNavi = styled.a`
 	font-weight: bold;
 `;
 const Header = ({}) => {
+	const history = useHistory();
 	return (
 		<HeaderContainer>
 			<InsideContainer style={{ paddingLeft: 80 }}>
@@ -41,17 +44,17 @@ const Header = ({}) => {
 				</a>
 			</InsideContainer>
 			<InsideContainer>
-				<TopNavi style={{ color: colors.yellow }}>Trang Chủ</TopNavi>
+				<TopNavi style={{ color: colors.yellow }} onClick={() => history.push('/')}>Trang Chủ </TopNavi>
 				<TopNavi>Về chúng tôi</TopNavi>
 
-				<TopNavi>Tìm chuyến xe</TopNavi>
+				<TopNavi onClick={() => history.push('/searchtour')}>Tìm chuyến xe</TopNavi>
 
-				<TopNavi>Hóa đơn</TopNavi>
+				<TopNavi onClick={() => history.push('/bill')}>Hóa đơn</TopNavi>
 
 				<TopNavi>Tin tức</TopNavi>
 			</InsideContainer>
 			<InsideContainer>
-				<AuthenText>Đăng nhập</AuthenText>
+				<AuthenText onClick={() => history.push('/login')}>Đăng nhập</AuthenText>
 			</InsideContainer>
 		</HeaderContainer>
 	);

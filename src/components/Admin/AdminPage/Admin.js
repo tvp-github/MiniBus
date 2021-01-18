@@ -41,9 +41,8 @@ const Admin = ({ }) => {
                         <div class="card">
                             <div>
                                 <button autoFocus onClick={() => onIndexChange(1)} onMouseEnter={() => (pageIndex!=1)&&onHoverChange(1)} class={hovered != 1 ? "btn-tab d-flex justify-content-start align-items-center show-desktop" : "btn-tab-active d-flex justify-content-start align-items-center show-desktop"} ><i className="fa fa-user mr-2" aria-hidden="true"></i> Quản lý đơn hàng</button>
-                                <button onClick={() => onIndexChange(2)} onMouseEnter={() => (pageIndex!=2)&&onHoverChange(2)} class={hovered != 2 ? "btn-tab d-flex justify-content-start align-items-center show-desktop" : "btn-tab-active d-flex justify-content-start align-items-center show-desktop"} ><i className="fa fa-suitcase mr-2" aria-hidden="true"></i> Quản lý nhân viên</button>
-                                <button onClick={() => onIndexChange(3)} onMouseEnter={() => (pageIndex!=3)&&onHoverChange(3)} class={hovered != 3 ? "btn-tab d-flex justify-content-start align-items-center show-desktop" : "btn-tab-active d-flex justify-content-start align-items-center show-desktop"} ><i className="fa fa-book mr-2" aria-hidden="true"></i> Quản lý xe</button>
-                                <button onClick={() => onIndexChange(4)} onMouseEnter={() => (pageIndex!=4)&&onHoverChange(4)} class={hovered != 4 ? "btn-tab d-flex justify-content-start align-items-center show-desktop" : "btn-tab-active d-flex justify-content-start align-items-center show-desktop"} ><i className="fa fa-exchange mr-2" aria-hidden="true"></i> Quản Lý Chuyến xe</button>
+                                <button onClick={() => onIndexChange(2)} onMouseEnter={() => (pageIndex!=2)&&onHoverChange(2)} class={hovered != 2 ? "btn-tab d-flex justify-content-start align-items-center show-desktop" : "btn-tab-active d-flex justify-content-start align-items-center show-desktop"} ><i className="fa fa-book mr-2" aria-hidden="true"></i> Quản lý xe</button>
+                                <button onClick={() => onIndexChange(3)} onMouseEnter={() => (pageIndex!=3)&&onHoverChange(3)} class={hovered != 3 ? "btn-tab d-flex justify-content-start align-items-center show-desktop" : "btn-tab-active d-flex justify-content-start align-items-center show-desktop"} ><i className="fa fa-exchange mr-2" aria-hidden="true"></i> Quản Lý Chuyến xe</button>
                             </div>
 
                         </div>
@@ -54,12 +53,12 @@ const Admin = ({ }) => {
                                 case 1:
                                     return <OrderListComponent></OrderListComponent>
                                     break;
+                                // case 2:
+                                //     return <EmployeeListComponent></EmployeeListComponent>
+                                //     break;
                                 case 2:
-                                    return <EmployeeListComponent></EmployeeListComponent>
-                                    break;
-                                case 3:
                                     return <CarListComponent></CarListComponent>
-                                case 4: 
+                                case 3: 
                                 return <TourListComponent></TourListComponent>
                             }
                             })()}
