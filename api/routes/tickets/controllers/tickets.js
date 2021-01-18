@@ -29,7 +29,7 @@ async function getTicketById(req, res) {
 
 async function createTicket(req, res) {
   try {
-    // Create trip
+    // Create ticket
     const newTicket = new Ticket(req.body);
     await newTicket.save();
 

@@ -1,0 +1,21 @@
+models
+  Employee = Admin
+  Customer = User
+  Bill
+  Ticket
+  Trip
+  Vehicle
+
+api_routes
+  admin
+    POST http://localhost:8000/admins/          : create admin (testing)
+    GET  http://localhost:8000/admins/auth      : verify token
+    POST http://localhost:8000/admins/auth      : login
+  user
+    POST htpp://localhost:8000/users/           : register
+    GET  http://localhost:8000/users/auth       : verify token
+    POST http://localhost:8000/users/auth       : login
+  vehicle - CURD - user_token
+  trip - CRUD - user_token
+  ticket - CRUD - user_token
+  bill - CRUD - user_token
