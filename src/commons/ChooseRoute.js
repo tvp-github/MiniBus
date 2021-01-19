@@ -94,6 +94,13 @@ const ChooseRoute = ({}) => {
 			isOneWay: isOW
 		});
 	}
+	const handleClickOW = () => {
+		setIsOW(true);
+	}
+	const handleClickTW = () => {
+		console.log("Checked");
+		setIsOW(false);
+	}
 	return (
 		<ChooseRouteContainer>
 			<HorizontalContainer>
@@ -103,10 +110,10 @@ const ChooseRoute = ({}) => {
 				<TitleText>Mua vé trực tuyến</TitleText>
 			</HorizontalContainer>
 			<HorizontalContainer style={{ marginTop: 15, marginBottom: 15 }}>
-				<input type="radio" id="one-way" name="bus-type" />
+				<input type="radio" id="one-way" name="bus-type" onClick = {handleClickOW} />
 				<RadioLable for="one-way">Một chiều</RadioLable>
-				<input type="radio" id="round-trip" name="bus-type" />
-				<RadioLable for="round-trip">Khứ hồi</RadioLable>
+				<input type="radio" id="round-trip" name="bus-type" onClick = {handleClickTW}/>
+				<RadioLable for="round-trip" on>Khứ hồi</RadioLable>
 			</HorizontalContainer>
 			<HorizontalContainer style={{ justifyContent: "space-between" }}>
 				<VMiniContainer style={{ width: "26%" }}>
