@@ -25,8 +25,9 @@ async function register(req, res) {
 
     // Create user
     const newUser = new User({
-      ...req.body,
-      password: hashPassword
+      username: req.body.username,
+      password: hashPassword,
+      phone: req.body.phone
     });
     await newUser.save();
 
