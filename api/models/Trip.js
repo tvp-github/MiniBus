@@ -10,8 +10,12 @@ const TripSchema = new mongoose.Schema({
     type: Date,
     required: true
   },
-  time_end: {
-    type: Date,
+  start: {
+    type: String,
+    required: true
+  },
+  end: {
+    type: String,
     required: true
   },
   driver: {
