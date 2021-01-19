@@ -11,8 +11,8 @@ const EmployeeList = ({}) => {
             <div class="row liner">
                                 <label class="col-sm-4 header-table">Quản lý Nhân Viên</label>
                                 <div></div>
-                                <label class="col-sm-4 header-table"></label>
-                                <label class="col-sm-4 add-button">+ Thêm mới</label>
+                                <label class="col-sm-6 header-table"></label>
+                                <label class="col-sm-2 add-button">+ Thêm mới</label>
                             </div>
                            
         </div>

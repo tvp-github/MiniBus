@@ -7,6 +7,7 @@ import axios from 'axios';
 
 
 const TourList = ({}) => {
+    let CarList = [ 'CAR001', 'CAR002', 'CAR003'];
     const [show, setShow] = useState(false);
 
     const handleClose = () => setShow(false);
@@ -27,45 +28,41 @@ const TourList = ({}) => {
     const TourDetail = ({}) => {
         return(
             <div>
-                <div class={"section mt-2"}>
-                    <p>Thông tin chuyến đi</p>
+            <div class="form-group row">
+                <label for="staticEmail" class="col-sm-2 col-form-label">Điểm đi:</label>
+                <div class="col-sm-10">
+                    <input class="col-sm-8 form-control" type="text" name="name" placeholder="Nhập điểm đi" />
                 </div>
-                <div class="row mb-2">
-                    <a class={"col-sm-2 label"}>Điểm đi:</a>
-                    <a class={"col-sm-4 content"}>Sài Gòn</a>
-                    <a class={"col-sm-2 label"}>Điểm đến:</a>
-                    <a class={"col-sm-3 content"}>Đà Lạt</a>
-                </div>
-                <div class="row mb-2">
-                    <a class={"col-sm-2 label"}>Thời gian:</a>
-                    <a class={"col-sm-4 content-bold"}>22:00</a>
-                    <a class={"col-sm-2 label"}>Ngày đi:</a>
-                    <a class={"col-sm-3 content-bold"}>25/12/2020</a>
-                </div>
-                <div class="row mb-2">
-                    <a class={"col-sm-2 label"}>Giá chuyến:</a>
-                    <a class={"col-sm-3 content-bold"}>120.000đ</a>
-                </div>
-                
-                <div class={"section mt-2"}>
-                    <p>Thông tin tài xế </p>
-                </div>
-                <div class="row mb-2">
-                    <a class={"col-sm-2 label"}>Họ và tên:</a>
-                    <a class={"col-sm-4 content"}>Nguyễn Văn A</a>
-                </div>
-
-                <div class={"section mt-2"}>
-                    <p>Thông tin xe</p>
-                </div>
-                <div class="row mb-2">
-                    <a class={"col-sm-2 label"}>Mã xe:</a>
-                    <a class={"col-sm-4 content"}>123456</a>
-                    <a class={"col-sm-2 label"}>Loại xe:</a>
-                    <a class={"col-sm-3 content"}>Giường nằm</a>
-                </div>
-
             </div>
+            <div class="form-group row">
+                <label for="staticEmail" class="col-sm-2 col-form-label">Điểm đến:</label>
+                <div class="col-sm-10">
+                    <input class="col-sm-8 form-control" type="text" name="name" placeholder="Nhập điểm đến" />
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="staticEmail" class="col-sm-2 col-form-label">Ngày đi:</label>
+                <div class="col-sm-10 row">
+                    <input class="col-sm-2 ml-3 mr-2 form-control" type="time" name="name"  />
+                    <input class="col-sm-6 form-control" type="date" name="name"  />
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="staticEmail" class="col-sm-2 col-form-label">Giá vé:</label>
+                <div class="col-sm-10">
+                    <input class="col-sm-8 form-control" type="text" name="name" placeholder="Nhập giá vé" />
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="staticEmail" class="col-sm-2 col-form-label">Chọn xe:</label>
+                <div class="col-sm-10">
+                    <select class="select" placeholder="Xe">
+                            {CarList}
+                    </select>
+                </div>
+            </div>
+          
+        </div>
         )
     }
 
@@ -97,8 +94,8 @@ const TourList = ({}) => {
             <div class="row liner">
                 <label class="col-sm-4 header-table">Quản lý Chuyến xe</label>
                 <div></div>
-                <label class="col-sm-4 header-table"></label>
-                <label class="col-sm-4 add-button">+ Thêm mới</label>
+                <label class="col-sm-6 header-table"></label>
+                <label class="col-sm-2 add-button" onClick={handleShow}>+ Thêm mới</label>
             </div>
             <div class="row up-space">
                 <input class="col-sm-4 form-control" type="text" name="name" placeholder="Tìm kiếm" />
@@ -107,11 +104,12 @@ const TourList = ({}) => {
             <table class="table table-profile">
                 <thead>
                     <tr>
-                        <th class=""scope="col">Mã chuyến xe</th>
+                        <th class=""scope="col">Mã chuyến</th>
                         <th scope="col">Điểm đi</th>
                         <th scope="col">Điểm đến</th>
                         <th scope="col">Thời gian xuất phát</th>
                         <th scope="col">Giá chuyến</th>
+                        <th scope="col">Xe</th>
                         <th scope="col">Thao tác</th>
                     </tr>
                 </thead>
@@ -122,6 +120,7 @@ const TourList = ({}) => {
                         <td>Đà Lạt</td>
                         <td>22h 25/12/2020</td>
                         <td>120.000</td>
+                        <td>Giường nằm 34</td>
                         <td>
                             <div class="row">
                                     <i className="fa fa-edit mr-2 col-2" aria-hidden="true"></i>
@@ -129,6 +128,7 @@ const TourList = ({}) => {
                                     <i className="fa fa-align-justify mr-2 col-2" aria-hidden="true" onClick={handleShow}></i>
                             </div>
                         </td>
+                        
                     </tr>
                 </tbody>
 
@@ -139,6 +139,7 @@ const TourList = ({}) => {
                         <td>Đà Lạt</td>
                         <td>22h 25/12/2020</td>
                         <td>120.000</td>
+                        <td>Giường nằm 34</td>
                         <td>
                             <div class="row">
                                     <i className="fa fa-edit mr-2 col-2" aria-hidden="true"></i>
@@ -146,6 +147,7 @@ const TourList = ({}) => {
                                     <i className="fa fa-align-justify mr-2 col-2" aria-hidden="true" onClick={handleShow}></i>
                             </div>
                         </td>
+                        
                     </tr>
                 </tbody>
             </table>       
