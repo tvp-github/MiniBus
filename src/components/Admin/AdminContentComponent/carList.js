@@ -100,9 +100,9 @@ const CarList = ({}) => {
                         <td>Giường nằm</td>
                         <td>
                             <div class="row">
-                                    <i className="fa fa-edit mr-2 col-2" aria-hidden="true"></i>
-                                    <i className="fa fa-trash mr-2 col-2" aria-hidden="true"></i>
-                                    {/* <i className="fa fa-align-justify mr-2 col-2" aria-hidden="true" onClick={handleShow}></i> */}
+                            <button class="icon-btn" data-toggle="tooltip" data-placement="right" title="Sửa thông tin"><i className="fa fa-edit " aria-hidden="true" ></i></button>
+                                <button class="icon-btn" data-toggle="tooltip" data-placement="right" title="Xóa xe"><i className="fa fa-trash " aria-hidden="true" ></i></button>
+                                <button class="icon-btn" data-toggle="tooltip" data-placement="right" title="Xem chi tiết" ><i className="fa fa-align-justify " aria-hidden="true" ></i></button>
                             </div>
                         </td>
                     </tr>
@@ -113,9 +113,9 @@ const CarList = ({}) => {
                         <td>Phòng nằm</td>
                         <td>
                             <div class="row">
-                                    <i className="fa fa-edit mr-2 col-2" aria-hidden="true"></i>
-                                    <i className="fa fa-trash mr-2 col-2" aria-hidden="true"></i>
-                                    {/* <i className="fa fa-align-justify mr-2 col-2" aria-hidden="true" onClick={handleShow}></i> */}
+                                <button class="icon-btn" data-toggle="tooltip" data-placement="right" title="Sửa thông tin"><i className="fa fa-edit " aria-hidden="true" ></i></button>
+                                <button class="icon-btn" data-toggle="tooltip" data-placement="right" title="Xóa xe"><i className="fa fa-trash " aria-hidden="true" ></i></button>
+                                <button class="icon-btn" data-toggle="tooltip" data-placement="right" title="Xem chi tiết" ><i className="fa fa-align-justify " aria-hidden="true" ></i></button>
                             </div>
                         </td>
                     </tr>
@@ -126,9 +126,9 @@ const CarList = ({}) => {
                         <td>Ghế ngồi</td>
                         <td>
                             <div class="row">
-                                    <i className="fa fa-edit mr-2 col-2" aria-hidden="true"></i>
-                                    <i className="fa fa-trash mr-2 col-2" aria-hidden="true"></i>
-                                    {/* <i className="fa fa-align-justify mr-2 col-2" aria-hidden="true" onClick={handleShow}></i> */}
+                            <button class="icon-btn" data-toggle="tooltip" data-placement="right" title="Sửa thông tin"><i className="fa fa-edit " aria-hidden="true" ></i></button>
+                                <button class="icon-btn" data-toggle="tooltip" data-placement="right" title="Xóa xe"><i className="fa fa-trash " aria-hidden="true" ></i></button>
+                                <button class="icon-btn" data-toggle="tooltip" data-placement="right" title="Xem chi tiết" ><i className="fa fa-align-justify " aria-hidden="true" ></i></button>
                             </div>
                         </td>
                     </tr>

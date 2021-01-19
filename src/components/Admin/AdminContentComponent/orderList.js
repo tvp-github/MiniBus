@@ -174,9 +174,9 @@ const OrderList = ({}) => {
                                         <td class="trang-thai-don-hang-wait">Đang chờ thanh toán</td>
                                         <td>
                                             <div class="row">
-                                                    <i className="fa fa-edit mr-2 col-2" aria-hidden="true"></i>
-                                                    <i className="fa fa-trash mr-2 col-2" aria-hidden="true"></i>
-                                                    <i className="fa fa-align-justify mr-2 col-2" aria-hidden="true" onClick={handleShow}></i>
+                                                    <button class="icon-btn" data-toggle="tooltip" data-placement="right" title="Xóa đơn hàng"><i className="fa fa-trash " aria-hidden="true" ></i></button>
+                                                    <button class="icon-btn" data-toggle="tooltip" data-placement="right" title="Hủy đơn hàng"><i className="fa fa-times-circle " aria-hidden="true" ></i></button>
+                                                    <button class="icon-btn" data-toggle="tooltip" data-placement="right" title="Xem chi tiết" onClick={handleShow}><i className="fa fa-align-justify " aria-hidden="true" ></i></button>
                                             </div>
                                         </td>
                                     </tr>
