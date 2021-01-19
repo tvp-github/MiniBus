@@ -42,18 +42,10 @@ function App() {
 					</Route>
 					<Route path="/booking">
 						<Switch>
-							<Route path="/booking/step2" exact>
-								<Step2 />
-							</Route>
-							<Route path="/booking/step3" exact>
-								<Step3 />
-							</Route>
-							<Route path="/booking/step4" exact>
-								<Step4 />
-							</Route>
-							<Route path="/booking/success" exact>
-								<Success />
-							</Route>
+							<Route path="/booking/step2" exact component={Step2}/>
+							<Route path="/booking/step3" exact component={Step3}/>
+							<Route path="/booking/step4" exact component={Step4}/>
+							<Route path="/booking/success" exact component={Success}/>
 						</Switch>
 					</Route>
 				</Switch>

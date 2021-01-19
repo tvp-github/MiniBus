@@ -106,8 +106,32 @@ const ContentLine = styled.p`
     margin: 0px;
     padding: 0px 0px 15px 20px;
 `;
-const Step3 = ({}) => {
+const Step3 = (props) => {
 	const history = useHistory();
+	const [name, setName] = useState("");
+	const [phone, setPhone] = useState("");
+	const [email, setEmail] = useState("");
+	const tickets = props.location.tickets;
+	const ticketsBack = props.location.ticketsBack;
+	const handleNext = () => {
+		history.push({
+			pathname: "/booking/step4",
+			tickets: tickets,
+			ticketsBack: ticketsBack,
+			name: name,
+			phone: phone,
+			email: email
+		})
+	}
+	const onChangeName = (e) => {
+		setName(e.target.value);
+	}
+	const onChangePhone = (e) => {
+		setPhone(e.target.value);
+	}
+	const onChangeEmail = (e) => {
+		setEmail(e.target.value);
+	}
 	return (
 		<>
 			<Header />
@@ -121,17 +145,17 @@ const Step3 = ({}) => {
 						<MiniName>
 							Họ tên khách hàng <RedSpan>*</RedSpan>
 						</MiniName>
-						<TextInput type="text" placeholder="Họ và tên" />
+						<TextInput type="text" placeholder="Họ và tên" onChange={onChangeName}/>
 						<MiniName>
 							Số điện thoại <RedSpan>*</RedSpan>
 						</MiniName>
 
-						<TextInput type="text" placeholder="Số điện thoại" />
+						<TextInput type="text" placeholder="Số điện thoại" onChange={onChangePhone}/>
 						<MiniName>
 							Email <RedSpan>*</RedSpan>
 						</MiniName>
 
-						<TextInput type="text" placeholder="Email" />
+						<TextInput type="text" placeholder="Email" onChange={onChangeEmail}/>
 					</HalfContainer>
 					<HalfContainer>
 						<RedTitle>PHƯƠNG THỨC THANH TOÁN</RedTitle>
@@ -182,7 +206,7 @@ const Step3 = ({}) => {
 							<span style={{ marginInline: 5 }}>Quay lại</span>
 						</ButtonText>
 					</LeftButton>
-					<RightButton onClick={() => history.push("/booking/step4")}>
+					<RightButton onClick={handleNext}>
 						<ButtonText>
 							<span style={{ marginInline: 5 }}>Tiếp tục</span>
 							<FontAwesomeIcon icon={faArrowRight} />

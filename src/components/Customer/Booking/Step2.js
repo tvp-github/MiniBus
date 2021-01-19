@@ -47,7 +47,31 @@ const ButtonText = styled.p`
 	margin: 0px;
 `;
 const Step2 = ({ oneWay }) => {
+	const [tickets, setTickets] = useState([]);
+	const [ticketsBack, setTicketsBack] = useState([]);
 	const history = useHistory();
+	const handlePickTicket = (ele) => {
+		console.log(ele);
+		let ticket = {pos: "A" + ele};
+		if(tickets.includes(ticket)){
+			return;
+		}
+		setTickets(tickets.concat(ticket));
+	}
+	const handlePickTicketBack = (ele) => {
+		let ticket = {pos: "A" + ele};
+		if(ticketsBack.includes(ticket)){
+			return;
+		}
+		setTicketsBack(ticketsBack.concat(ticket));
+	}
+	const handleNext = () => {
+		history.push({
+			pathname: '/booking/step3',
+			tickets: tickets,
+			ticketsBack: ticketsBack
+		})
+	}
 	return (
 		<>
 			<Header />
@@ -62,8 +86,8 @@ const Step2 = ({ oneWay }) => {
 							: { justifyContent: "space-between" }
 					}
 				>
-					<ChooseSeat />
-					{!oneWay && <ChooseSeat />}
+					<ChooseSeat handleClick={(ele) => handlePickTicket(ele)} tickets ={tickets}/>
+					{!oneWay && <ChooseSeat handleClick={(ele) => handlePickTicketBack(ele)} tickets ={ticketsBack}/>}
 				</HContainer>
 				<HContainer>
 					<LeftButton onClick={()=>history.push("/")}>
@@ -72,7 +96,7 @@ const Step2 = ({ oneWay }) => {
 							<span style={{ marginInline: 5 }}>Quay lại</span>
 						</ButtonText>
 					</LeftButton>
-					<RightButton onClick={()=>history.push("/booking/step3")}>
+					<RightButton onClick={handleNext}>
 						<ButtonText>
 							<span style={{ marginInline: 5 }}>Tiếp tục</span>
 							<FontAwesomeIcon icon={faArrowRight} />
