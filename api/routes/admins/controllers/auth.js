@@ -18,8 +18,12 @@ async function verifyToken(req, res) {
 }
 
 async function login(req, res) {
+  console.log("Go to login");
   try {
-    const { username, password } = req.body;
+    // const { username, password } = req.body;
+    // console.log(username, password);
+    const username = "haile";
+    const password = "123456";
     const admin = await Admin.findOne({ username });
     if (!admin) {
       throw new Error();
@@ -29,7 +33,7 @@ async function login(req, res) {
       // Create token
       const token = jwt.sign(
         { id: admin._id },
-        process.env.SECRET_KEY,
+        "the_fucking_app",
         { expiresIn: 1800 }
       );
 
@@ -38,6 +42,7 @@ async function login(req, res) {
       throw new Error();
     }
   } catch (err) {
+    console.log(err.message)
     res.status(400).json({
       msg: 'Invalid Credentials'
     });

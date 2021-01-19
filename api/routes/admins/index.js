@@ -14,7 +14,6 @@ if (process.env.NODE_ENV != 'production') {
   router.post('/', async (req, res) => {
     try {
       const { username, password } = req.body;
-      
       // Hash password
       const salt = await bcrypt.genSalt(10);
       const hashPassword = await bcrypt.hash(password, salt);
@@ -22,7 +21,7 @@ if (process.env.NODE_ENV != 'production') {
       // Create admin
       const newAdmin = new Admin({
         username,
-        password: hashPassword
+        password: hashPassword,
       });
       await newAdmin.save();
 
