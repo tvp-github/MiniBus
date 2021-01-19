@@ -37,9 +37,7 @@ function App() {
 					<Route path="/searchtour" exact>
 						<SearchTour/>
 					</Route>
-					<Route path="/" exact>
-						<Home />
-					</Route>
+					<Route path="/" exact component={Home}/>
 					<Route path="/booking">
 						<Switch>
 							<Route path="/booking/step2" exact component={Step2}/>

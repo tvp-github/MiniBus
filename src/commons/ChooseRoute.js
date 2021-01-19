@@ -85,10 +85,14 @@ const MiniName = styled.p`
 `;
 const ChooseRoute = ({}) => {
 	const history = useHistory();
+	const [isOW, setIsOW] = useState(true);
 	const _onSubmit = (e)=>{
 		e.preventDefault();
-		console.log("Go submit");
-		history.push("/booking/step2");
+		console.log("Fix: " + isOW);
+		history.push({
+			pathname: "/booking/step2",
+			isOneWay: isOW
+		});
 	}
 	return (
 		<ChooseRouteContainer>

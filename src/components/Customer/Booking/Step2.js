@@ -46,9 +46,11 @@ const ButtonText = styled.p`
 	color: ${colors.dark_grey};
 	margin: 0px;
 `;
-const Step2 = ({ oneWay }) => {
+const Step2 = (props) => {
 	const [tickets, setTickets] = useState([]);
 	const [ticketsBack, setTicketsBack] = useState([]);
+	console.log("Debug: " , props.location.isOneWay);
+	const oneWay = props.location.isOneWay;
 	const history = useHistory();
 	const handlePickTicket = (ele) => {
 		console.log(ele);
