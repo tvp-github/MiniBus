@@ -12,7 +12,7 @@ router.route('/')
   .delete();
 
 router.route('/:id')
-  .get()
+  .get(auth, vhcCtrl.getVehicleById)
   .post()
   .put(auth, vhcCtrl.updateVehicleById)
   .delete(auth, vhcCtrl.deleteVehicleById);

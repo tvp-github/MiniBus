@@ -6,15 +6,15 @@ const auth = require('../users/middleware/auth');
 const ticCtrl = require('./controllers/tickets');
 
 router.route('/')
-  .get(auth, ticCtrl.getTrips)
-  .post(auth, ticCtrl.createTrip)
+  .get(auth, ticCtrl.getTickets)
+  .post(auth, ticCtrl.createTicket)
   .put()
   .delete();
 
 router.route('/:id')
-  .get()
+  .get(auth, ticCtrl.getTicketById)
   .post()
-  .put(auth, ticCtrl.updateTripById)
-  .delete(auth, ticCtrl.deleteTripById);
+  .put(auth, ticCtrl.updateTicketById)
+  .delete(auth, ticCtrl.deleteTicketById);
 
 module.exports = router;

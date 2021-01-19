@@ -12,7 +12,7 @@ router.route('/')
   .delete();
 
 router.route('/:id')
-  .get()
+  .get(auth, trpCtrl.getTripById)
   .post()
   .put(auth, trpCtrl.updateTripById)
   .delete(auth, trpCtrl.deleteTripById);

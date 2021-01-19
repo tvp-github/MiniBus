@@ -12,7 +12,7 @@ router.route('/')
   .delete();
 
 router.route('/:id')
-  .get()
+  .get(auth, billCtrl.getBillById)
   .post()
   .put(auth, billCtrl.updateBillById)
   .delete(auth, billCtrl.deleteBillById);

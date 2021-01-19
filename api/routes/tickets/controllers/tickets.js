@@ -4,9 +4,7 @@ const Ticket = require('../../../models/Ticket');
 async function getTickets(req, res) {
   try {
     const tickets = await Ticket.find();
-    if (tickets) {
-      res.json({ tickets });
-    }
+    res.json({ tickets });
   } catch (err) {
     res.status(404).json({
       msg: 'Tickets Do Not Exist'
