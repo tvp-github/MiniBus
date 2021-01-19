@@ -19,15 +19,6 @@ async function verifyToken(req, res) {
 
 async function register(req, res) {
   try {
-    // Check duplicate email
-    const foundedEmail = await User.find({ email: req.body.email });
-    if (foundedEmail) {
-      res.status(409).json({
-        msg: "Email already exists"
-      });
-      return;
-    }
-
     // Hash password
     const salt = await bcrypt.genSalt(10);
     const hashPassword = await bcrypt.hash(password, salt);
