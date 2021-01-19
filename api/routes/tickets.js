@@ -1,18 +1,18 @@
 const router = require('express').Router();
 
 // Middleware
-const auth = require('../users/middleware/auth');
+const auth = require('../middleware/auth');
 // Controllers
-const ticCtrl = require('./controllers/tickets');
+const ticCtrl = require('../controllers/tickets');
 
 router.route('/')
-  .get(auth, ticCtrl.getTickets)
-  .post(auth, ticCtrl.createTicket)
+  .get(ticCtrl.getTickets)
+  .post(ticCtrl.createTicket)
   .put()
   .delete();
 
 router.route('/:id')
-  .get(auth, ticCtrl.getTicketById)
+  .get(ticCtrl.getTicketById)
   .post()
   .put(auth, ticCtrl.updateTicketById)
   .delete(auth, ticCtrl.deleteTicketById);

@@ -1,10 +1,13 @@
 // Models
-const Bill = require('../../../models/Bill');
+const Bill = require('../models/Bill');
+const Customer = require('../models/Customer');
 
 async function getBills(req, res) {
   console.log("get bills");
   try {
-    const bills = await Bill.find();
+    const bills = await Bill.find()
+      .populate('ticket')
+      .populate('customer');
     if (bills) {
       res.json({ bills });
     }
@@ -17,7 +20,9 @@ async function getBills(req, res) {
 
 async function getBillById(req, res) {
   try {
-    const bill = await Bill.findById(req.params.id);
+    const bill = await Bill.findById(req.params.id)
+      .populate('ticket')
+      .populate('customer');
     if (bill) {
       res.json({ bill });
     }
@@ -30,6 +35,9 @@ async function getBillById(req, res) {
 
 async function createBill(req, res) {
   try {
+    // Create customer
+    const newCustomer = new Customer(req.body);
+    await newCustomer.save();
     // Create bill
     const newBill = new Bill(req.body);
     await newBill.save();

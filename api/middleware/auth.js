@@ -7,8 +7,8 @@ async function auth(req, res, next) {
       throw new Error();
     }
 
-    const decoded = jwt.verify(token, process.env.SECRET_KEY);
-    req.admin = decoded;
+    const decoded = jwt.verify(token, 'mini-bus');
+    req.user = decoded;
     next();
   } catch (err) {
     res.status(401).json({

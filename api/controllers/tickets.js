@@ -1,9 +1,9 @@
 // Models
-const Ticket = require('../../../models/Ticket');
+const Ticket = require('../models/Ticket');
 
 async function getTickets(req, res) {
   try {
-    const tickets = await Ticket.find();
+    const tickets = await Ticket.find().populate('trip');
     res.json({ tickets });
   } catch (err) {
     res.status(404).json({
@@ -14,7 +14,7 @@ async function getTickets(req, res) {
 
 async function getTicketById(req, res) {
   try {
-    const ticket = await Ticket.findById(req.params.id);
+    const ticket = await Ticket.findById(req.params.id).populate('trip');
     if (ticket) {
       res.json({ ticket });
     }
