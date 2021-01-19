@@ -16,13 +16,9 @@ const TourList = ({}) => {
     useEffect(async ()=>{
         try {
             const api = `http://localhost:8000/trips`;
-            const res = await axios.get(api,{
-              headers: {
-                Authorization: localStorage.getItem('admin_token')
-              }
-            });
+            const res = await axios.get(api);
             console.log(res);
-            // setTours(res);
+            setTours(res.data);
           } catch (err) {
             console.log(err.response);
           }
