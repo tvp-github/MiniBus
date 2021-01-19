@@ -1,11 +1,11 @@
 const mongoose = require('mongoose');
 
 const BillSchema = new mongoose.Schema({
-  ticket: {
+  ticket: [{
     type: mongoose.SchemaTypes.ObjectId,
     ref: 'ticket',
     required: true
-  },
+  }],
   customer: {
     type: mongoose.SchemaTypes.ObjectId,
     ref: 'customer',
