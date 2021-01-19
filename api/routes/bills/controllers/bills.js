@@ -2,6 +2,7 @@
 const Bill = require('../../../models/Bill');
 
 async function getBills(req, res) {
+  console.log("get bills");
   try {
     const bills = await Bill.find();
     if (bills) {

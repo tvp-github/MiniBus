@@ -1,13 +1,30 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import 'font-awesome/css/font-awesome.min.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Dropdown, Button } from 'react-bootstrap';
-import Modal from 'react-bootstrap/Modal'
+import Modal from 'react-bootstrap/Modal';
+import axios from 'axios';
+import { useHistory } from 'react-router-dom';
 const OrderList = ({}) => {
     const [show, setShow] = useState(false);
-
+    const [orders, setOrders] = useState([]);
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
+    const history = useHistory();
+    useEffect(async ()=>{
+        try {
+            const api = `http://localhost:8000/bills`;
+            const res = await axios.get(api,{
+              headers: {
+                Authorization: localStorage.getItem('admin_token')
+              }
+            });
+            console.log(res);
+            setOrders(res);
+          } catch (err) {
+            console.log(err.response);
+          }
+    },[])
     
     const OrderDetail = ({}) => {
         return(
@@ -167,36 +184,7 @@ const OrderList = ({}) => {
                                             </div>
                                         </td>
                                     </tr>
-                                    <tr>
-                                        <th class="ma-don-hang">867534858</th>
-                                        <td>04/01/2020</td>
-                                        <td> Trần Thị Tuyết Chung</td>
-                                        <td>0385909888</td>
-                                        <td>960.000</td>
-                                        <td class="trang-thai-don-hang-suc">Thành Công</td>
-                                        <td>
-                                            <div class="row">
-                                                    <i className="fa fa-edit mr-2 col-2" aria-hidden="true"></i>
-                                                    <i className="fa fa-trash mr-2 col-2" aria-hidden="true"></i>
-                                                    <i className="fa fa-align-justify mr-2 col-2" aria-hidden="true" onClick={handleShow}></i>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th class="ma-don-hang">867534858</th>
-                                        <td>04/01/2020</td>
-                                        <td> Trần Thị Tuyết Chung</td>
-                                        <td>0385909888</td>
-                                        <td>960.000</td>
-                                        <td class="trang-thai-don-hang-fail">Thất bại</td>
-                                        <td>
-                                            <div class="row">
-                                                    <i className="fa fa-edit mr-2 col-2" aria-hidden="true"></i>
-                                                    <i className="fa fa-trash mr-2 col-2" aria-hidden="true"></i>
-                                                    <i className="fa fa-align-justify mr-2 col-2" aria-hidden="true" onClick={handleShow}></i>
-                                            </div>
-                                        </td>
-                                    </tr>
+                                    
                                 
                                 </tbody>
                             </table>
