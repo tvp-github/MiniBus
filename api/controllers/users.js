@@ -32,6 +32,7 @@ async function register(req, res) {
 
     res.status(201).json({ user: newUser });
   } catch (err) {
+    console.log(err.message);
     res.status(500).json({
       msg: "Server Error"
     });
@@ -45,7 +46,7 @@ async function login(req, res) {
     if (!user) {
       throw new Error();
     }
-
+    console.log(username, password);
     const isMatch = await bcrypt.compare(password, user.password);
     if (isMatch) {
       // Create token

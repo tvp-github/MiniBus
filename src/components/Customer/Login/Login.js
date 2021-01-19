@@ -26,12 +26,13 @@ const Login = ({}) => {
 		e.preventDefault();
 		(async () => {
 		try {
-			const res = await axios.post("http://localhost:8000/admins/auth", {
+			const res = await axios.post("http://localhost:8000/users/auth", {
 				username,
 				password
 			});
-			const obj = await res.data;
-			if (obj.admin) {
+			console.log(res);
+			const obj = res.data;
+			if (obj.user) {
 				localStorage.setItem("admin_token", obj.token);
 				history.replace('/admin');
 			}
