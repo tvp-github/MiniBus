@@ -21,7 +21,7 @@ async function register(req, res) {
   try {
     // Hash password
     const salt = await bcrypt.genSalt(10);
-    const hashPassword = await bcrypt.hash(password, salt);
+    const hashPassword = await bcrypt.hash(req.body.password, salt);
 
     // Create user
     const newUser = new User({
