@@ -3,6 +3,7 @@ const Bill = require('../models/Bill');
 const Customer = require('../models/Customer');
 
 async function getBills(req, res) {
+  console.log("get bills");
   try {
     const bills = await Bill.find()
       .populate('ticket')

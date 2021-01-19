@@ -1,8 +1,26 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import 'font-awesome/css/font-awesome.min.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import axios from 'axios';
+import { useHistory } from 'react-router-dom';
 
 const CarList = ({}) => {
+    const history = useHistory();
+    const [cars, setCars] = useState([]);
+    useEffect(async ()=>{
+        try {
+            const api = `http://localhost:8000/vehicles`;
+            const res = await axios.get(api,{
+              headers: {
+                Authorization: localStorage.getItem('admin_token')
+              }
+            });
+            console.log(res);
+            // setCars(res);
+          } catch (err) {
+            console.log(err.response);
+          }
+    },[])
 	return (
 		<div>
             <div class="row liner">

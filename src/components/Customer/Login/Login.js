@@ -7,6 +7,9 @@ import Header from "../../../commons/Header";
 import MainContainer from "../../../commons/MainContainer";
 import FatFooter from "../../../commons/FatFooter";
 
+import axios from 'axios';
+import { useHistory } from 'react-router-dom';
+
 import 'font-awesome/css/font-awesome.min.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Dropdown, Button } from 'react-bootstrap';
@@ -14,6 +17,37 @@ import Modal from 'react-bootstrap/Modal'
 import { MDBContainer, MDBRow, MDBCol, MDBBtn, MDBCard, MDBCardBody, MDBIcon } from 'mdbreact';
 
 const Login = ({}) => {
+	const history = useHistory();
+	const [username, setUsername] = useState("");
+  	const [password, setPassword] = useState("");
+
+
+	const handleSignIn = (e) => {
+		e.preventDefault();
+		(async () => {
+		try {
+			const res = await axios.post("http://localhost:8000/admins/auth", {
+				username,
+				password
+			});
+			const obj = await res.data;
+			if (obj.admin) {
+				localStorage.setItem("admin_token", obj.token);
+				history.replace('/admin');
+			}
+		} catch (err) {
+			alert("Đăng nhập thất bại!")
+		}
+		})();
+	}
+
+	const handleUsernameChange = (e) => {
+		setUsername(e.target.value);
+	}
+
+	const handlePasswordChange = (e) => {
+		setPassword(e.target.value);
+	}
 	return (
 		<>
 			<Header />
@@ -25,17 +59,17 @@ const Login = ({}) => {
 							<form>
 								<p className="h4 text-center mb-4 mt-4">Đăng nhập</p>
 								<label htmlFor="defaultFormLoginEmailEx" className="grey-text">
-								Tên đăng nhập 
+									Tên đăng nhập 
 								</label>
-								<input type="email" id="defaultFormLoginEmailEx" className="form-control" />
+								<input id="defaultFormLoginEmailEx" className="form-control" onChange={handleUsernameChange}/>
 								<br />
 								<label htmlFor="defaultFormLoginPasswordEx" className="grey-text">
-								Mật khẩu
+									Mật khẩu
 								</label>
-								<input type="password" id="defaultFormLoginPasswordEx" className="form-control" />
+								<input type="password" id="defaultFormLoginPasswordEx" className="form-control" onChange={handlePasswordChange}/>
 								<div className="text-center mt-4">
-								<MDBBtn color="indigo" type="submit">Login</MDBBtn>
-								</div>
+									<MDBBtn color="indigo" onClick={handleSignIn}>Login</MDBBtn>
+								</div>	
 							</form>
 							</MDBCol>
 						</MDBRow>

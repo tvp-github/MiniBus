@@ -1,14 +1,32 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import 'font-awesome/css/font-awesome.min.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Modal from 'react-bootstrap/Modal'
 import { Button } from 'react-bootstrap';
+import axios from 'axios';
+
 
 const TourList = ({}) => {
     const [show, setShow] = useState(false);
 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
+
+    const [tours, setTours] = useState([]);
+    useEffect(async ()=>{
+        try {
+            const api = `http://localhost:8000/trips`;
+            const res = await axios.get(api,{
+              headers: {
+                Authorization: localStorage.getItem('admin_token')
+              }
+            });
+            console.log(res);
+            // setTours(res);
+          } catch (err) {
+            console.log(err.response);
+          }
+    },[])
 
     const TourDetail = ({}) => {
         return(
