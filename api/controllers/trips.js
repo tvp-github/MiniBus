@@ -1,9 +1,9 @@
 // Models
-const Trip = require('../../../models/Trip');
+const Trip = require('../models/Trip');
 
 async function getTrips(req, res) {
   try {
-    const trips = await Trip.find();
+    const trips = await Trip.find().populate('vehicle');
     if (trips) {
       res.json({ trips });
     }
@@ -16,7 +16,7 @@ async function getTrips(req, res) {
 
 async function getTripById(req, res) {
   try {
-    const trip = await Trip.findById(req.params.id);
+    const trip = await Trip.findById(req.params.id).populate('vehicle');
     if (trip) {
       res.json({ trip });
     }

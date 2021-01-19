@@ -2,7 +2,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
 // Models
-const User = require('../../../models/User');
+const User = require('../models/User');
 
 async function verifyToken(req, res) {
   try {
@@ -60,7 +60,7 @@ async function login(req, res) {
       // Create token
       const token = jwt.sign(
         { id: user._id },
-        process.env.SECRET_KEY,
+        'mini-bus',
         { expiresIn: 1800 }
       );
 

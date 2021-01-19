@@ -1,18 +1,18 @@
 const router = require('express').Router();
 
 // Middleware
-const auth = require('../users/middleware/auth');
+const auth = require('../middleware/auth');
 // Controllers
-const billCtrl = require('./controllers/bills');
+const billCtrl = require('../controllers/bills');
 
 router.route('/')
-  .get(auth, billCtrl.getBills)
+  .get(billCtrl.getBills)
   .post(auth, billCtrl.createBill)
   .put()
   .delete();
 
 router.route('/:id')
-  .get(auth, billCtrl.getBillById)
+  .get(billCtrl.getBillById)
   .post()
   .put(auth, billCtrl.updateBillById)
   .delete(auth, billCtrl.deleteBillById);

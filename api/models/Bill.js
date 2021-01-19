@@ -6,9 +6,9 @@ const BillSchema = new mongoose.Schema({
     ref: 'ticket',
     required: true
   },
-  user: {
+  customer: {
     type: mongoose.SchemaTypes.ObjectId,
-    ref: 'user',
+    ref: 'customer',
     required: true
   },
   status: {
