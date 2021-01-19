@@ -1,15 +1,20 @@
 import React, { useState } from "react";
+import Header from "../../../commons/Header";
+import MainContainer from "../../../commons/MainContainer";
+import FatFooter from "../../../commons/FatFooter";
+
+import 'font-awesome/css/font-awesome.min.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import styled from "styled-components";
-import colors from "../values/colors";
+import colors from "../../../values/colors"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBus, faSync } from "@fortawesome/free-solid-svg-icons";
-import {useHistory} from "react-router-dom";
 const ChooseRouteContainer = styled.div`
 	background-color: ${colors.white};
 	display: flex;
 	box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.5);
 	border-radius: 24px;
-	margin: 240px 67px 0px 67px;
+	margin: 120px 57px 200px 57px;
 	padding: 24px 50px;
 	flex-direction: column;
 `;
@@ -83,39 +88,25 @@ const MiniName = styled.p`
 	padding-bottom: 0px;
 	font-family: Open Sans;
 `;
-const ChooseRoute = ({}) => {
-	const history = useHistory();
-	const [isOW, setIsOW] = useState(true);
-	const _onSubmit = (e)=>{
-		e.preventDefault();
-		console.log("Fix: " + isOW);
-		history.push({
-			pathname: "/booking/step2",
-			isOneWay: isOW
-		});
-	}
-	const handleClickOW = () => {
-		setIsOW(true);
-	}
-	const handleClickTW = () => {
-		console.log("Checked");
-		setIsOW(false);
-	}
+
+const SearchTour = ({}) => {
 	return (
-		<ChooseRouteContainer>
+		<>
+			<Header />
+            <ChooseRouteContainer>
 			<HorizontalContainer>
 				<IconText>
 					<FontAwesomeIcon icon={faBus} />
 				</IconText>
-				<TitleText>Mua vé trực tuyến</TitleText>
+				<TitleText>Tìm kiếm vé xe</TitleText>
 			</HorizontalContainer>
-			<HorizontalContainer style={{ marginTop: 15, marginBottom: 15 }}>
-				<input type="radio" id="one-way" name="bus-type" onClick = {handleClickOW} />
+            <HorizontalContainer style={{ marginTop: 15, marginBottom: 15 }}>
+				<input type="radio" id="one-way" name="bus-type" />
 				<RadioLable for="one-way">Một chiều</RadioLable>
-				<input type="radio" id="round-trip" name="bus-type" onClick = {handleClickTW}/>
-				<RadioLable for="round-trip" on>Khứ hồi</RadioLable>
+				<input type="radio" id="round-trip" name="bus-type" />
+				<RadioLable for="round-trip">Khứ hồi</RadioLable>
 			</HorizontalContainer>
-			<HorizontalContainer style={{ justifyContent: "space-between" }}>
+            <HorizontalContainer style={{ justifyContent: "space-between" }}>
 				<VMiniContainer style={{ width: "26%" }}>
 					<MiniName>Chọn điểm đi</MiniName>
 					<TextInput>
@@ -156,10 +147,12 @@ const ChooseRoute = ({}) => {
 				</VMiniContainer>
 			</HorizontalContainer>
 			<HorizontalContainer>
-				<RightButton onClick={_onSubmit} type="submit" value="Đặt vé" />
+				<RightButton type="submit" value="Tìm chuyến xe" />
 			</HorizontalContainer>
-		</ChooseRouteContainer>
+            </ChooseRouteContainer>
+			<FatFooter />
+		</>
 	);
 };
 
-export default ChooseRoute;
+export default SearchTour;

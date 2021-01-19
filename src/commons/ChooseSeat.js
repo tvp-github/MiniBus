@@ -124,12 +124,14 @@ const RedMiniText = styled.p`
 	padding-bottom: 0px;
 	font-family: Open Sans;
 `;
-const ChooseSeat = ({}) => {
+const ChooseSeat = (props) => {
+	const tickets = props.tickets;
+	const {handleClick} = props;
 	const history = useHistory();
 	const _onSubmit = (e) => {
 		e.preventDefault();
 		console.log("Go submit");
-		history.push("/booking/step2");
+		// history.push("/booking/step2");
 	};
 	return (
 		<ChooseRouteContainer>
@@ -156,7 +158,7 @@ const ChooseSeat = ({}) => {
 				<AllSeat>
 					<SeatContainer>
 						{[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((ele, index) => (
-							<Seat key={index} style={{ backgroundColor: colors.mid_grey }}>
+							<Seat key={index} style={{ backgroundColor: colors.mid_grey }} onClick={()=> {console.log(ele);handleClick(ele)}}>
 								<SeatText>A{ele}</SeatText>
 							</Seat>
 						))}
@@ -187,12 +189,12 @@ const ChooseSeat = ({}) => {
 					<HContainer></HContainer>
 				</AllSeat>
 				<HContainer>
-					<MiniName>Ghế đã chọn: 2</MiniName>
+							<MiniName>Ghế đã chọn: {tickets ? tickets.length : 0}</MiniName>
 					<MiniName>Tổng tiền</MiniName>
 				</HContainer>
                 <HContainer>
-					<RedMiniText>A8, A12</RedMiniText>
-					<RedMiniText>480.000đ</RedMiniText>
+							<RedMiniText>{tickets ? tickets.map((item)=>{return item.pos + " "}) : ""}</RedMiniText>
+					<RedMiniText>{tickets  ? tickets.length * 100000 : 0}đ</RedMiniText>
 				</HContainer>
 			</VMiniContainer>
 		</ChooseRouteContainer>

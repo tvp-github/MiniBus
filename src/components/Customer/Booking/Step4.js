@@ -115,12 +115,17 @@ const Content = styled.p`
 	color: ${colors.black_dark};
 `;
 
-const Step4 = ({}) => {
+const Step4 = (props) => {
 	const s = (p, bold) => ({
 		width: `${p}%`,
 		fontWeight: bold ? "bold" : "normal",
 	});
 	const history = useHistory();
+	const tickets = props.location.tickets;
+	const ticketsBack = props.location.ticketsBack;
+	const name = props.location.name;
+	const phone = props.location.phone;
+	const email = props.location.email;
 	return (
 		<>
 			<Header />
@@ -142,13 +147,13 @@ const Step4 = ({}) => {
 					</SectionTitle>
 					<SectionContent>
 						<Content style={s(20)}>Họ và tên:</Content>
-						<Content style={s(30)}>Trần Thị Tuyết Chung</Content>
+						<Content style={s(30)}>{name}</Content>
 						<Content style={s(20)}>Email:</Content>
 						<Content style={s(30)}>
-							tranthituyetchung@gmail.com
+							{email}
 						</Content>
 						<Content style={s(20)}>Số điện thoại:</Content>
-						<Content style={s(30)}>0345678915</Content>
+						<Content style={s(30)}>{phone}</Content>
 					</SectionContent>
 					<SectionTitle>
 						<ContentTitle>Thông tin chuyến đi</ContentTitle>
@@ -163,9 +168,9 @@ const Step4 = ({}) => {
 						<Content style={s(20)}>Ngày đi:</Content>
 						<Content style={s(30, true)}>16/12/2020</Content>
 						<Content style={s(20)}>Số ghế:</Content>
-						<Content style={s(30, true)}>A12, A13</Content>
+						<Content style={s(30, true)}>{tickets.map((item) => item.pos + "  ")}</Content>
 						<Content style={s(20)}>Tổng tiền:</Content>
-						<Content style={s(30, true)}>480.000đ</Content>
+						<Content style={s(30, true)}>{100000 * tickets.length}đ</Content>
 					</SectionContent>
 					<SectionTitle>
 						<ContentTitle>Thông tin chuyến về</ContentTitle>
@@ -180,13 +185,13 @@ const Step4 = ({}) => {
 						<Content style={s(20)}>Ngày đi:</Content>
 						<Content style={s(30, true)}>19/12/2020</Content>
 						<Content style={s(20)}>Số ghế:</Content>
-						<Content style={s(30, true)}>A12, A13</Content>
+						<Content style={s(30, true)}>{ticketsBack.map((item) => item.pos + "  ")}</Content>
 						<Content style={s(20)}>Tổng tiền:</Content>
-						<Content style={s(30, true)}>480.000đ</Content>
+						<Content style={s(30, true)}>{100000 * ticketsBack.length}đ</Content>
 					</SectionContent>
 					<SectionTitle style={{ justifyContent: "flex-end" }}>
 						<ContentTitle>Tổng tiền:</ContentTitle>
-						<RedSpanPrice>100.000đ</RedSpanPrice>
+						<RedSpanPrice>{100000*(ticketsBack.length + tickets.length)}đ</RedSpanPrice>
 					</SectionTitle>
 					<SectionContent>
 						<Content>Phương thức thanh toán:</Content>
