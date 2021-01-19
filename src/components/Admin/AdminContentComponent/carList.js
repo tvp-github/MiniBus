@@ -10,13 +10,9 @@ const CarList = ({}) => {
     useEffect(async ()=>{
         try {
             const api = `http://localhost:8000/vehicles`;
-            const res = await axios.get(api,{
-              headers: {
-                Authorization: localStorage.getItem('admin_token')
-              }
-            });
+            const res = await axios.get(api);
             console.log(res);
-            // setCars(res);
+            setCars(res.data);
           } catch (err) {
             console.log(err.response);
           }

@@ -14,13 +14,9 @@ const OrderList = ({}) => {
     useEffect(async ()=>{
         try {
             const api = `http://localhost:8000/bills`;
-            const res = await axios.get(api,{
-              headers: {
-                Authorization: localStorage.getItem('admin_token')
-              }
-            });
+            const res = await axios.get(api);
             console.log(res);
-            setOrders(res);
+            setOrders(res.data);
           } catch (err) {
             console.log(err.response);
           }
