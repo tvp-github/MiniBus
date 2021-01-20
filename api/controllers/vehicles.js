@@ -31,9 +31,7 @@ async function createVehicle(req, res) {
   try {
     console.log(req.body);
     // Create vehicle
-    const newVehicle = new Vehicle({
-      type: req.body.type
-    });
+    const newVehicle = new Vehicle(req.body);
     await newVehicle.save();
 
     res.status(201).json({
