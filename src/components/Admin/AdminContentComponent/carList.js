@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import 'font-awesome/css/font-awesome.min.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import axios from 'axios';
@@ -24,6 +24,9 @@ const CarList = ({}) => {
     const handleCloseDelete = () => setShowDelete(false);
     const handleShowDelete = () => setShowDelete(true);
 
+    const numberRef = useRef();
+    const typeRef= useRef();
+
     useEffect(async ()=>{
         try {
             const api = `http://localhost:8000/vehicles`;
@@ -45,7 +48,7 @@ const CarList = ({}) => {
     const handleAddCar = async (e) => {
         e.preventDefault();
         const api = `http://localhost:8000/vehicles`;
-        const res = await axios.post(api, {type: type, number: code},{
+        const res = await axios.post(api, {type: typeRef.current.value, number: numberRef.current.value},{
             headers: {
               Authorization: localStorage.getItem('token')
             }
@@ -81,19 +84,19 @@ const CarList = ({}) => {
                 <div class="form-group row">
                     <label for="staticEmail" class="col-sm-2 col-form-label">Mã xe:</label>
                     <div class="col-sm-10">
-                        <input class="col-sm-8 form-control" type="text" name="name" placeholder="Nhập mã"  />
+                        <input class="col-sm-8 form-control" type="text" name="name" placeholder="Nhập mã" />
                     </div>
                 </div>
                 <div class="form-group row">
                     <label for="staticEmail" class="col-sm-2 col-form-label">Biển số xe:</label>
                     <div class="col-sm-10">
-                        <input class="col-sm-8 form-control" type="text" name="name" placeholder="Nhập biển số xe" onChange={handleChangeCode} value={code} autoFocus={true}/>
+                        <input class="col-sm-8 form-control" type="text" name="name" placeholder="Nhập biển số xe" ref={numberRef}/>
                     </div>
                 </div>
                 <div class="form-group row">
                     <label for="staticEmail" class="col-sm-2 col-form-label" >Loại xe:</label>
                     <div class="col-sm-10">
-                        <input class="col-sm-8 form-control" type="text" name="name" placeholder="Nhập loại xe" onChange={handleChangeType} value={type} autoFocus={true}/>
+                        <input class="col-sm-8 form-control" type="text" name="name" placeholder="Nhập loại xe" ref={typeRef}/>
                     </div>
                 </div>
             </div>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import 'font-awesome/css/font-awesome.min.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Modal from 'react-bootstrap/Modal'
@@ -21,6 +21,13 @@ const TourList = ({}) => {
     const handleCloseAdd = () => setShowAdd(false);
     const handleShowAdd = () => setShowAdd(true);
     const [showDelete, setShowDelete] = useState(false);
+
+    const _start = useRef();
+    const _end = useRef();
+    const _price = useRef();
+    const _car = useRef();
+
+
     const handleCloseDelete = (id) => {
         
         setShowDelete(false);
@@ -54,12 +61,12 @@ const TourList = ({}) => {
     const handleAddTour = async () => {
         console.log(cars);
         const model = {};
-        model.vehicle = curCar;
+        model.vehicle = _car.current.value;
         model.time_start = Date.now();
-        model.start = "Sài Gòn";
-        model.end = "Cần Thơ";
+        model.start = _start.current.value;
+        model.end = _end.current.value;
         model.driver = "driver";
-        model.price = 100000;
+        model.price = _price.current.value;
 
         const api = `http://localhost:8000/trips`;
         const res = await axios.post(api, model, {
@@ -112,13 +119,13 @@ const TourList = ({}) => {
             <div class="form-group row">
                 <label for="staticEmail" class="col-sm-2 col-form-label">Điểm đi:</label>
                 <div class="col-sm-10">
-                    <input class="col-sm-8 form-control" type="text" name="name" placeholder="Nhập điểm đi" />
+                    <input class="col-sm-8 form-control" type="text" name="name" placeholder="Nhập điểm đi" ref={_start} />
                 </div>
             </div>
             <div class="form-group row">
                 <label for="staticEmail" class="col-sm-2 col-form-label">Điểm đến:</label>
                 <div class="col-sm-10">
-                    <input class="col-sm-8 form-control" type="text" name="name" placeholder="Nhập điểm đến" />
+                    <input class="col-sm-8 form-control" type="text" name="name" placeholder="Nhập điểm đến" ref={_end}/>
                 </div>
             </div>
             <div class="form-group row">
@@ -131,13 +138,13 @@ const TourList = ({}) => {
             <div class="form-group row">
                 <label for="staticEmail" class="col-sm-2 col-form-label">Giá vé:</label>
                 <div class="col-sm-10">
-                    <input class="col-sm-8 form-control" type="text" name="name" placeholder="Nhập giá vé" />
+                    <input class="col-sm-8 form-control" type="text" name="name" placeholder="Nhập giá vé" ref={_price}/>
                 </div>
             </div>
             <div class="form-group row">
                 <label for="staticEmail" class="col-sm-2 col-form-label">Chọn xe:</label>
                 <div class="col-sm-10">
-                <select value={curCar ? curCar : null} onChange={handleSelectCar}>
+                <select ref={_car}>
 					<option selected disabled hidden>
 						Chọn xe
 					</option>
