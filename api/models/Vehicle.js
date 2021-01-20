@@ -5,6 +5,10 @@ const VehicleSchema = new mongoose.Schema({
     type: String,
     trim: true,
     required: true
+  },
+  number: {
+    type: String,
+    required: true
   }
 });
 
