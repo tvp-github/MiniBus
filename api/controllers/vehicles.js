@@ -47,9 +47,7 @@ async function createVehicle(req, res) {
 
 async function updateVehicleById(req, res) {
   try {
-    await Vehicle.findByIdAndUpdate(req.params.id, {
-      type: req.body.type
-    });
+    await Vehicle.findByIdAndUpdate(req.params.id, req.body);
 
     res.json({
       msg: 'Update vehicle success'
