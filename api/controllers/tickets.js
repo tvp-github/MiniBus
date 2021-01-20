@@ -12,6 +12,23 @@ async function getTickets(req, res) {
   }
 }
 
+async function getTicketsWhereTripId(req, res) {
+  try {
+    const tickets = await Ticket.find().populate('trip');
+    
+    const obj = Array.from(tickets).filter((ticket) => 
+      (ticket.trip && ticket.trip._id == req.params.id)
+    );
+
+    res.json({ tickets: obj });
+  } catch (err) {
+    console.log(err.message);
+    res.status(500).json({
+      msg: 'Tickets do not exist'
+    });
+  }
+}
+
 async function getTicketById(req, res) {
   try {
     const ticket = await Ticket.findById(req.params.id).populate('trip');
@@ -73,6 +90,7 @@ async function deleteTicketById(req, res) {
 module.exports = {
   getTickets,
   getTicketById,
+  getTicketsWhereTripId,
   createTicket,
   updateTicketById,
   deleteTicketById
