@@ -35,7 +35,7 @@ const CarList = ({}) => {
     const handleAddCar = async (e) => {
         e.preventDefault();
         const api = `http://localhost:8000/vehicles`;
-        const res = await axios.post(api, {type: type, code: code},{
+        const res = await axios.post(api, {type: type, number: code},{
             headers: {
               Authorization: localStorage.getItem('token')
             }
@@ -150,7 +150,7 @@ const CarList = ({}) => {
                             return(
                                 <tr>
                                     <th class="ma-xe">{item._id.slice(6)}</th>
-                                    <td>51E-152.63</td>
+                                    <td>{item.number ? item.number : "93T8-3851"}</td>
                                     <td>{item.type}</td>
                                     <td>
                                         <div class="row">
