@@ -7,7 +7,7 @@ const billCtrl = require('../controllers/bills');
 
 router.route('/')
   .get(billCtrl.getBills)
-  .post(auth, billCtrl.createBill)
+  .post(billCtrl.createBill)
   .put()
   .delete();
 

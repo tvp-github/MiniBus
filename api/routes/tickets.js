@@ -7,7 +7,7 @@ const ticCtrl = require('../controllers/tickets');
 
 router.route('/')
   .get(ticCtrl.getTickets)
-  .post(ticCtrl.createTicket)
+  .post(auth, ticCtrl.createTicket)
   .put()
   .delete();
 

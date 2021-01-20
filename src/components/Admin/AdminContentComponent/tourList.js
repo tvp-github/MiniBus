@@ -9,6 +9,8 @@ import axios from 'axios';
 const TourList = ({}) => {
     let CarList = [ 'CAR001', 'CAR002', 'CAR003'];
     const [cars, setCars] = useState([]);
+    const [curId, setCurId] = useState("");
+    const [curCar, setCurCar] = useState(null);
     const [showDetail, setShowDetail] = useState(false);
     const handleCloseDetail = () => setShowDetail(false);
     const handleShowDetail = () => setShowDetail(true);
@@ -19,8 +21,15 @@ const TourList = ({}) => {
     const handleCloseAdd = () => setShowAdd(false);
     const handleShowAdd = () => setShowAdd(true);
     const [showDelete, setShowDelete] = useState(false);
-    const handleCloseDelete = () => setShowDelete(false);
-    const handleShowDelete = () => setShowDelete(true);
+    const handleCloseDelete = (id) => {
+        
+        setShowDelete(false);
+    } 
+    const handleShowDelete = (id) =>{
+        console.log(id);
+        setCurId(id);
+        setShowDelete(true);
+    } 
     const [tours, setTours] = useState([]);
     useEffect(async ()=>{
         try {
@@ -43,8 +52,9 @@ const TourList = ({}) => {
     },[])
 
     const handleAddTour = async () => {
+        console.log(cars);
         const model = {};
-        model.vehicle = cars[0]._id;
+        model.vehicle = curCar;
         model.time_start = Date.now();
         model.start = "Sài Gòn";
         model.end = "Cần Thơ";
@@ -61,7 +71,39 @@ const TourList = ({}) => {
         let newTrip = res.data.trip;
         console.log(tours);
         setTours(tours.concat(newTrip));
-        handleCloseAdd();
+        const apiTicket = `http://localhost:8000/tickets`;
+        for(let i = 0; i < 10 ; i ++ ){
+            let ticket = {};
+            ticket.position = "A" + (i+1);
+            ticket.trip = newTrip._id;
+            await axios.post(apiTicket, ticket,{
+                headers: {
+                    Authorization: localStorage.getItem('token')
+                }
+            });
+        }
+        setShowAdd(false);
+    }
+
+    const handleDeleteTour = async () => {
+        const api = `http://localhost:8000/trips/${curId}`;
+        const res = await axios.delete(api,{
+            headers: {
+              Authorization: localStorage.getItem('token')
+            }
+        });
+        let newTours = tours;
+        for(let i = 0 ; i < tours.length ; i++){
+            if(tours[i]._id === curId){
+                newTours.splice(i, 1);
+            }
+        }
+        setTours(newTours.slice());
+        setShowDelete(false);
+    }
+
+    const handleSelectCar = (e) => {
+        setCurCar(e.target.value);
     }
 
     const TourAdd = ({}) => {
@@ -95,16 +137,18 @@ const TourList = ({}) => {
             <div class="form-group row">
                 <label for="staticEmail" class="col-sm-2 col-form-label">Chọn xe:</label>
                 <div class="col-sm-10">
-                    <Dropdown>
-                        <Dropdown.Toggle id="dropdown-basic">
-                            Tất cả trạng thái
-                        </Dropdown.Toggle>
-                        <Dropdown.Menu>
-                            <Dropdown.Item >Action</Dropdown.Item>
-                            <Dropdown.Item>Another action</Dropdown.Item>
-                            <Dropdown.Item>Something else</Dropdown.Item>
-                        </Dropdown.Menu>
-                    </Dropdown>
+                <select value={curCar ? curCar : null} onChange={handleSelectCar}>
+					<option selected disabled hidden>
+						Chọn xe
+					</option>
+					{
+                        cars.map((item)=>{
+                            return(
+                            <option value={item._id}>{item.number}</option>
+                            )
+                        })
+                    }
+				</select>
                 </div>
             </div>
           
@@ -216,7 +260,7 @@ const TourList = ({}) => {
                     <Button variant="secondary" onClick={handleCloseDelete}>
                         Close
                     </Button>
-                    <Button variant="primary" onClick={handleCloseDelete}>
+                    <Button variant="primary" onClick={handleDeleteTour}>
                         Delete
                     </Button>
                 </Modal.Footer>
@@ -356,11 +400,11 @@ const TourList = ({}) => {
                                 <td>{item.end}</td>
                                 <td>{item.time_start.slice(0,10)}</td>
                                 <td>{item.price}</td>
-                                <td>{item.vehicle.type}</td>
+                                <td>{item.vehicle ? item.vehicle.type : "Giường nằm"}</td>
                                 <td>
                                     <div class="row">
                                         <button class="icon-btn" onClick={handleShowUpdate} data-toggle="tooltip" data-placement="right" title="Sửa thông tin"><i className="fa fa-edit " aria-hidden="true" ></i></button>
-                                        <button class="icon-btn" onClick={handleShowDelete} data-toggle="tooltip" data-placement="right" title="Xóa chuyến đi"><i className="fa fa-trash " aria-hidden="true" ></i></button>
+                                        <button class="icon-btn" onClick={() => handleShowDelete(item._id)} data-toggle="tooltip" data-placement="right" title="Xóa chuyến đi"><i className="fa fa-trash " aria-hidden="true" ></i></button>
                                         <button class="icon-btn"  onClick={handleShowDetail} data-toggle="tooltip" data-placement="right" title="Xem chi tiết" ><i className="fa fa-align-justify " aria-hidden="true" ></i></button>
                                     </div>
                                 </td>
