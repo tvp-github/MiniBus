@@ -29,7 +29,6 @@ async function getVehicleById(req, res) {
 
 async function createVehicle(req, res) {
   try {
-    console.log(req.body);
     // Create vehicle
     const newVehicle = new Vehicle(req.body);
     await newVehicle.save();

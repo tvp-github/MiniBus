@@ -1,11 +1,12 @@
 const router = require('express').Router();
+const auth = require('../middleware/auth');
 
 // Controllers
 const trpCtrl = require('../controllers/trips');
 
 router.route('/')
   .get(trpCtrl.getTrips)
-  .post(trpCtrl.createTrip)
+  .post(auth, trpCtrl.createTrip)
   .put()
   .delete();
 
