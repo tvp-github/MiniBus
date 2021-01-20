@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import styled from "styled-components";
 import colors from "../values/colors";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBus, faSync } from "@fortawesome/free-solid-svg-icons";
-import {useHistory} from "react-router-dom";
+import { useHistory } from "react-router-dom";
 const ChooseRouteContainer = styled.div`
 	background-color: ${colors.white};
 	display: flex;
@@ -86,8 +86,9 @@ const MiniName = styled.p`
 const ChooseRoute = ({}) => {
 	const history = useHistory();
 	const [isOW, setIsOW] = useState(true);
-
-	const _onSubmit = (e)=>{
+	const [fromDate, setFromDate] = useState("");
+	const [toDate, setToDate] = useState("");
+	const _onSubmit = (e) => {
 		e.preventDefault();
 		console.log("Fix: " + isOW);
 		history.push({
@@ -95,15 +96,25 @@ const ChooseRoute = ({}) => {
 			isOneWay: isOW,
 			start: "Sài Gòn",
 			end: "Tiền Giang",
-			date: "2021-12-12"
+			date: "2021-12-12",
 		});
-	}
+	};
 	const handleClickOW = () => {
 		setIsOW(true);
-	}
+	};
 	const handleClickTW = () => {
 		console.log("Checked");
 		setIsOW(true);
+	};
+
+	const handleFromDateChange = (e)=>{
+		e.preventDefault();
+		setFromDate(e.target.value);
+	}
+
+	const handleToDateChange = (e)=>{
+		e.preventDefault();
+		setToDate(e.target.value);
 	}
 	return (
 		<ChooseRouteContainer>
@@ -114,10 +125,22 @@ const ChooseRoute = ({}) => {
 				<TitleText>Mua vé trực tuyến</TitleText>
 			</HorizontalContainer>
 			<HorizontalContainer style={{ marginTop: 15, marginBottom: 15 }}>
-				<input type="radio" id="one-way" name="bus-type" onClick = {handleClickOW} />
+				<input
+					type="radio"
+					id="one-way"
+					name="bus-type"
+					onClick={handleClickOW}
+				/>
 				<RadioLable for="one-way">Một chiều</RadioLable>
-				<input type="radio" id="round-trip" name="bus-type" onClick = {handleClickTW}/>
-				<RadioLable for="round-trip" on>Khứ hồi</RadioLable>
+				<input
+					type="radio"
+					id="round-trip"
+					name="bus-type"
+					onClick={handleClickTW}
+				/>
+				<RadioLable for="round-trip" on>
+					Khứ hồi
+				</RadioLable>
 			</HorizontalContainer>
 			<HorizontalContainer style={{ justifyContent: "space-between" }}>
 				<VMiniContainer style={{ width: "26%" }}>
@@ -151,11 +174,11 @@ const ChooseRoute = ({}) => {
 				</VMiniContainer>
 				<VMiniContainer style={{ width: "17%" }}>
 					<MiniName>Chọn ngày đi</MiniName>
-					<DateInput type="date" placeholder="Từ ngày" />
+					<DateInput type="date" value={fromDate} onChange={handleFromDateChange} placeholder="Từ ngày" />
 				</VMiniContainer>
 				<VMiniContainer style={{ width: "17%" }}>
 					<MiniName>Chọn ngày đến</MiniName>
-					<DateInput type="date" placeholder="Đến ngày" />
+					<DateInput type="date" value={toDate} onChange={handleToDateChange} placeholder="Đến ngày" />
 				</VMiniContainer>
 			</HorizontalContainer>
 			<HorizontalContainer>
