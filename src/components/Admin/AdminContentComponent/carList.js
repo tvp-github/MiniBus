@@ -19,7 +19,7 @@ const CarList = ({}) => {
             const api = `http://localhost:8000/vehicles`;
             const res = await axios.get(api);
             console.log(res);
-            setCars(res.data);
+            setCars(res.data.vehicles);
           } catch (err) {
             console.log(err.response);
           }
@@ -35,11 +35,31 @@ const CarList = ({}) => {
     const handleAddCar = async (e) => {
         e.preventDefault();
         const api = `http://localhost:8000/vehicles`;
-        const res = await axios.post(api, {type: type, code: code});
-        setCars((cars)=>{
-            cars.concat(res.data.vehicle);
-        })
+        const res = await axios.post(api, {type: type, code: code},{
+            headers: {
+              Authorization: localStorage.getItem('token')
+            }
+        });
+        if(res.data){
+            setCars(cars.concat(res.data.vehicle));
+        }
         handleClose();
+    }
+    const handleDeleteCar = async (id) => {
+        console.log("DEBUG: delete", id);
+        const api = `http://localhost:8000/vehicles/${id}`;
+        const res = await axios.delete(api,{
+            headers: {
+              Authorization: localStorage.getItem('token')
+            }
+        });
+        let newCars = cars;
+        for(let i = 0 ; i < cars.length ; i++){
+            if(cars[i]._id === id){
+                newCars.splice(i, 1);
+            }
+        }
+        setCars(newCars.slice());
     }
     const CarDetail = () => {
         return(
@@ -119,38 +139,29 @@ const CarList = ({}) => {
                         <td>Giường nằm</td>
                         <td>
                             <div class="row">
-                                    <i className="fa fa-edit mr-2 col-2" aria-hidden="true"></i>
-                                    <i className="fa fa-trash mr-2 col-2" aria-hidden="true"></i>
+                                    <button><i className="fa fa-edit mr-2 col-2" aria-hidden="true"></i></button>
+                                    <button><i className="fa fa-trash mr-2 col-2" aria-hidden="true"></i></button>
                                     {/* <i className="fa fa-align-justify mr-2 col-2" aria-hidden="true" onClick={handleShow}></i> */}
                             </div>
                         </td>
                     </tr>
-
-                    <tr>
-                        <th class="ma-xe">123</th>
-                        <td>51E-152.63</td>
-                        <td>Phòng nằm</td>
-                        <td>
-                            <div class="row">
-                                    <i className="fa fa-edit mr-2 col-2" aria-hidden="true"></i>
-                                    <i className="fa fa-trash mr-2 col-2" aria-hidden="true"></i>
-                                    {/* <i className="fa fa-align-justify mr-2 col-2" aria-hidden="true" onClick={handleShow}></i> */}
-                            </div>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <th class="ma-xe">123</th>
-                        <td>51E-152.63</td>
-                        <td>Ghế ngồi</td>
-                        <td>
-                            <div class="row">
-                                    <i className="fa fa-edit mr-2 col-2" aria-hidden="true"></i>
-                                    <i className="fa fa-trash mr-2 col-2" aria-hidden="true"></i>
-                                    {/* <i className="fa fa-align-justify mr-2 col-2" aria-hidden="true" onClick={handleShow}></i> */}
-                            </div>
-                        </td>
-                    </tr>
+                    {
+                        cars.map((item)=>{
+                            return(
+                                <tr>
+                                    <th class="ma-xe">{item._id.slice(6)}</th>
+                                    <td>51E-152.63</td>
+                                    <td>{item.type}</td>
+                                    <td>
+                                        <div class="row">
+                                            <button><i className="fa fa-edit mr-2 col-2" aria-hidden="true"></i></button>
+                                            <button  onClick={()=>{handleDeleteCar(item._id)}}><i className="fa fa-trash mr-2 col-2" aria-hidden="true"></i></button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            )
+                        })
+                    }
                 </tbody>
             </table>
         </div>

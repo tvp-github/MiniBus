@@ -7,7 +7,7 @@ const vhcCtrl = require('../controllers/vehicles');
 
 router.route('/')
   .get(vhcCtrl.getVehicles)
-  .post(vhcCtrl.createVehicle)
+  .post(auth, vhcCtrl.createVehicle)
   .put()
   .delete();
 

@@ -33,7 +33,7 @@ const Login = ({}) => {
 			console.log(res);
 			const obj = res.data;
 			if (obj.user) {
-				localStorage.setItem("admin_token", obj.token);
+				localStorage.setItem("token", obj.token);
 				history.replace('/admin');
 			}
 		} catch (err) {

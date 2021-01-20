@@ -16,7 +16,7 @@ const OrderList = ({}) => {
             const api = `http://localhost:8000/bills`;
             const res = await axios.get(api);
             console.log(res);
-            setOrders(res.data);
+            setOrders(res.data.bills);
           } catch (err) {
             console.log(err.response);
           }
@@ -180,7 +180,27 @@ const OrderList = ({}) => {
                                             </div>
                                         </td>
                                     </tr>
-                                    
+                                    {
+                                        orders.map((item)=>{
+                                            return(
+                                                <tr>
+                                                    <th class="ma-don-hang">{item._id}</th>
+                                                    <td>{item.time}</td>
+                                                    <td>{item.user.name}</td>
+                                                    <td>{item.user.phone}</td>
+                                                    <td>960.000</td>
+                                                    <td class="trang-thai-don-hang-wait">Đang chờ thanh toán</td>
+                                                    <td>
+                                                        <div class="row">
+                                                                <i className="fa fa-edit mr-2 col-2" aria-hidden="true"></i>
+                                                                <i className="fa fa-trash mr-2 col-2" aria-hidden="true"></i>
+                                                                <i className="fa fa-align-justify mr-2 col-2" aria-hidden="true" onClick={handleShow}></i>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            )
+                                        })
+                                    }
                                 
                                 </tbody>
                             </table>
