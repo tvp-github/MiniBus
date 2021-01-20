@@ -52,6 +52,7 @@ async function updateTripById(req, res) {
       msg: 'Update trip success'
     });
   } catch (err) {
+    console.log(err.message)
     res.status(500).json({
       msg: 'Server error'
     });

@@ -16,7 +16,7 @@ const TourList = ({}) => {
     const handleShowDetail = () => setShowDetail(true);
     const [showUpdate, setShowUpdate] = useState(false);
     const handleCloseUpdate = () => setShowUpdate(false);
-    const handleShowUpdate = () => setShowUpdate(true);
+
     const [showAdd, setShowAdd] = useState(false);
     const handleCloseAdd = () => setShowAdd(false);
     const handleShowAdd = () => setShowAdd(true);
@@ -26,18 +26,51 @@ const TourList = ({}) => {
     const _end = useRef();
     const _price = useRef();
     const _car = useRef();
-
+    const upStart = useRef();
+    const upEnd = useRef();
+    const upPrice = useRef();
+    const upCar = useRef();
 
     const handleCloseDelete = (id) => {
-        
         setShowDelete(false);
     } 
     const handleShowDelete = (id) =>{
         console.log(id);
         setCurId(id);
         setShowDelete(true);
-    } 
+    }
+    const handleShowUpdate = (id) => {
+        setCurId(id);
+        setShowUpdate(true);
+    }
     const [tours, setTours] = useState([]);
+    const handleUpdateTour = async()=>{
+        console.log(cars);
+        const model = {};
+        model.vehicle = upCar.current.value;
+        model.time_start = Date.now();
+        model.start = upStart.current.value;
+        model.end = upEnd.current.value;
+        model.driver = "driver";
+        model.price = upPrice.current.value;
+
+        const api = `http://localhost:8000/trips/${curId}`;
+        const res = await axios.put(api, model, {
+            headers: {
+                Authorization: localStorage.getItem('token')
+            }
+        });
+        console.log(res);
+        for(let i = 0 ; i < tours.length ; i++){
+            if(tours[i]._id === curId){
+                tours[i].start = model.start;
+                tours[i].end = model.end;
+                tours[i].price = model.price;
+            }
+        }
+        setTours(tours.slice());
+        setShowUpdate(false);
+    }
     useEffect(async ()=>{
         try {
             const api = `http://localhost:8000/vehicles`;
@@ -56,7 +89,7 @@ const TourList = ({}) => {
           } catch (err) {
             console.log(err.response);
           }
-    },[])
+    },[setTours])
 
     const handleAddTour = async () => {
         console.log(cars);
@@ -108,6 +141,7 @@ const TourList = ({}) => {
         setTours(newTours.slice());
         setShowDelete(false);
     }
+
 
     const handleSelectCar = (e) => {
         setCurCar(e.target.value);
@@ -168,13 +202,13 @@ const TourList = ({}) => {
             <div class="form-group row">
                 <label for="staticEmail" class="col-sm-2 col-form-label">Điểm đi:</label>
                 <div class="col-sm-10">
-                    <input class="col-sm-8 form-control" type="text" name="name" placeholder="Nhập điểm đi" value={'Đà Lạt'} />
+                    <input class="col-sm-8 form-control" type="text" name="name" placeholder="Nhập điểm đi" ref={upStart} />
                 </div>
             </div>
             <div class="form-group row">
                 <label for="staticEmail" class="col-sm-2 col-form-label">Điểm đến:</label>
                 <div class="col-sm-10">
-                    <input class="col-sm-8 form-control" type="text" name="name" placeholder="Nhập điểm đến" value={'Sài Gòn'}/>
+                    <input class="col-sm-8 form-control" type="text" name="name" placeholder="Nhập điểm đến" ref={upEnd}/>
                 </div>
             </div>
             <div class="form-group row">
@@ -187,22 +221,24 @@ const TourList = ({}) => {
             <div class="form-group row">
                 <label for="staticEmail" class="col-sm-2 col-form-label">Giá vé:</label>
                 <div class="col-sm-10">
-                    <input class="col-sm-8 form-control" value={'240.000'} type="text" name="name" placeholder="Nhập giá vé" />
+                    <input class="col-sm-8 form-control" type="text" name="name" placeholder="Nhập giá vé" ref={upPrice}/>
                 </div>
             </div>
             <div class="form-group row">
                 <label for="staticEmail" class="col-sm-2 col-form-label">Loại xe:</label>
                 <div class="col-sm-10">
-                    <Dropdown>
-                        <Dropdown.Toggle id="dropdown-basic">
-                            Giường nằm 34
-                        </Dropdown.Toggle>
-                        <Dropdown.Menu>
-                            <Dropdown.Item >Action</Dropdown.Item>
-                            <Dropdown.Item>Another action</Dropdown.Item>
-                            <Dropdown.Item>Something else</Dropdown.Item>
-                        </Dropdown.Menu>
-                    </Dropdown>
+                <select ref={upCar}>
+					<option selected disabled hidden>
+						Chọn xe
+					</option>
+					{
+                        cars.map((item)=>{
+                            return(
+                            <option value={item._id}>{item.number}</option>
+                            )
+                        })
+                    }
+				</select>
                 </div>
             </div>
           
@@ -333,7 +369,7 @@ const TourList = ({}) => {
                     <Button variant="secondary" onClick={handleCloseUpdate}>
                         Close
                     </Button>
-                    <Button variant="primary" onClick={handleCloseUpdate}>
+                    <Button variant="primary" onClick={handleUpdateTour}>
                         Update
                     </Button>
                 </Modal.Footer>
@@ -360,43 +396,6 @@ const TourList = ({}) => {
                         <th scope="col">Thao tác</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <tr>
-                        <th class="ma-chuyen-xe">123</th>
-                        <td>TP.Hồ Chí Minh</td>
-                        <td>Đà Lạt</td>
-                        <td>22h 25/12/2020</td>
-                        <td>120.000</td>
-                        <td>Giường nằm 34</td>
-                        <td>
-                            <div class="row">
-                                <button class="icon-btn" onClick={handleShowUpdate} data-toggle="tooltip" data-placement="right" title="Sửa thông tin"><i className="fa fa-edit " aria-hidden="true" ></i></button>
-                                <button class="icon-btn" onClick={handleShowDelete} data-toggle="tooltip" data-placement="right" title="Xóa chuyến đi"><i className="fa fa-trash " aria-hidden="true" ></i></button>
-                                <button class="icon-btn"  onClick={handleShowDetail} data-toggle="tooltip" data-placement="right" title="Xem chi tiết" ><i className="fa fa-align-justify " aria-hidden="true" ></i></button>
-                            </div>
-                        </td>
-                        
-                    </tr>
-                </tbody>
-
-                <tbody>
-                    <tr>
-                        <th class="ma-chuyen-xe">123</th>
-                        <td>TP.Hồ Chí Minh</td>
-                        <td>Đà Lạt</td>
-                        <td>22h 25/12/2020</td>
-                        <td>120.000</td>
-                        <td>Giường nằm 34</td>
-                        <td>
-                            <div class="row">
-                                <button class="icon-btn" onClick={handleShowUpdate} data-toggle="tooltip" data-placement="right" title="Sửa thông tin"><i className="fa fa-edit " aria-hidden="true" ></i></button>
-                                <button class="icon-btn" onClick={handleShowDelete} data-toggle="tooltip" data-placement="right" title="Xóa chuyến đi"><i className="fa fa-trash " aria-hidden="true" ></i></button>
-                                <button class="icon-btn"  onClick={handleShowDetail} data-toggle="tooltip" data-placement="right" title="Xem chi tiết" ><i className="fa fa-align-justify " aria-hidden="true" ></i></button>
-                            </div>
-                        </td>
-                        
-                    </tr>
-                </tbody>
                 {
                     tours.map((item)=>{
                         return(
@@ -405,12 +404,12 @@ const TourList = ({}) => {
                                 <th class="ma-chuyen-xe">{item._id}</th>
                                 <td>{item.start}</td>
                                 <td>{item.end}</td>
-                                <td>{item.time_start.slice(0,10)}</td>
+                                <td>{item.time_start ? item.time_start : ""}</td>
                                 <td>{item.price}</td>
                                 <td>{item.vehicle ? item.vehicle.type : "Giường nằm"}</td>
                                 <td>
                                     <div class="row">
-                                        <button class="icon-btn" onClick={handleShowUpdate} data-toggle="tooltip" data-placement="right" title="Sửa thông tin"><i className="fa fa-edit " aria-hidden="true" ></i></button>
+                                        <button class="icon-btn" onClick={()=>handleShowUpdate(item._id)} data-toggle="tooltip" data-placement="right" title="Sửa thông tin"><i className="fa fa-edit " aria-hidden="true" ></i></button>
                                         <button class="icon-btn" onClick={() => handleShowDelete(item._id)} data-toggle="tooltip" data-placement="right" title="Xóa chuyến đi"><i className="fa fa-trash " aria-hidden="true" ></i></button>
                                         <button class="icon-btn"  onClick={handleShowDetail} data-toggle="tooltip" data-placement="right" title="Xem chi tiết" ><i className="fa fa-align-justify " aria-hidden="true" ></i></button>
                                     </div>

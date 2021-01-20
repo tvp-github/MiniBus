@@ -13,7 +13,7 @@ router.route('/')
 router.route('/:id')
   .get(trpCtrl.getTripById)
   .post()
-  .put(trpCtrl.updateTripById)
+  .put(auth, trpCtrl.updateTripById)
   .delete(trpCtrl.deleteTripById);
 
 module.exports = router;
