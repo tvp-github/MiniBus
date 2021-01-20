@@ -9,21 +9,52 @@ import axios from 'axios';
 const TourList = ({}) => {
     let CarList = [ 'CAR001', 'CAR002', 'CAR003'];
     const [show, setShow] = useState(false);
-
+    const [cars, setCars] = useState([]);
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
 
     const [tours, setTours] = useState([]);
     useEffect(async ()=>{
         try {
-            const api = `http://localhost:8000/trips`;
+            const api = `http://localhost:8000/vehicles`;
             const res = await axios.get(api);
-            console.log(res);
-            setTours(res.data);
+            setCars(res.data.vehicles);
           } catch (err) {
             console.log(err.response);
           }
     },[])
+    useEffect(async ()=>{
+        try {
+            const api = `http://localhost:8000/trips`;
+            const res = await axios.get(api);
+            console.log(res);
+            setTours(res.data.trips);
+          } catch (err) {
+            console.log(err.response);
+          }
+    },[])
+
+    const handleAddTour = async () => {
+        const model = {};
+        model.vehicle = cars[0]._id;
+        model.time_start = Date.now();
+        model.start = "Sài Gòn";
+        model.end = "Cần Thơ";
+        model.driver = "driver";
+        model.price = 100000;
+
+        const api = `http://localhost:8000/trips`;
+        const res = await axios.post(api, model, {
+            headers: {
+                Authorization: localStorage.getItem('token')
+            }
+        });
+        console.log(res);
+        let newTrip = res.data.trip;
+        console.log(tours);
+        setTours(tours.concat(newTrip));
+        handleClose();
+    }
 
     const TourDetail = ({}) => {
         return(
@@ -86,8 +117,8 @@ const TourList = ({}) => {
                     <Button variant="secondary" onClick={handleClose}>
                         Close
                     </Button>
-                    <Button variant="primary" onClick={handleClose}>
-                        Save Changes
+                    <Button variant="primary" onClick={handleAddTour}>
+                        Add
                     </Button>
                 </Modal.Footer>
             </Modal>
@@ -150,6 +181,29 @@ const TourList = ({}) => {
                         
                     </tr>
                 </tbody>
+                {
+                    tours.map((item)=>{
+                        return(
+                        <tbody>
+                            <tr>
+                                <th class="ma-chuyen-xe">{item._id}</th>
+                                <td>{item.start}</td>
+                                <td>{item.end}</td>
+                                <td>{item.time_start.slice(0,10)}</td>
+                                <td>{item.price}</td>
+                                <td>{item.vehicle.type}</td>
+                                <td>
+                                    <div class="row">
+                                            <i className="fa fa-edit mr-2 col-2" aria-hidden="true"></i>
+                                            <i className="fa fa-trash mr-2 col-2" aria-hidden="true"></i>
+                                            <i className="fa fa-align-justify mr-2 col-2" aria-hidden="true" onClick={handleShow}></i>
+                                    </div>
+                                </td>
+                                
+                            </tr>
+                        </tbody>)
+                    })
+                }
             </table>       
         </div>
 	);

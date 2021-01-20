@@ -30,15 +30,14 @@ async function getVehicleById(req, res) {
 async function createVehicle(req, res) {
   try {
     // Create vehicle
-    const newVehicle = new Vehicle({
-      type: req.body.type
-    });
+    const newVehicle = new Vehicle(req.body);
     await newVehicle.save();
 
     res.status(201).json({
       vehicle: newVehicle
     });
   } catch (err) {
+    console.log(err.message);
     res.status(500).json({
       msg: 'Server error'
     });
@@ -47,9 +46,7 @@ async function createVehicle(req, res) {
 
 async function updateVehicleById(req, res) {
   try {
-    await Vehicle.findByIdAndUpdate(req.params.id, {
-      type: req.body.type
-    });
+    await Vehicle.findByIdAndUpdate(req.params.id, req.body);
 
     res.json({
       msg: 'Update vehicle success'

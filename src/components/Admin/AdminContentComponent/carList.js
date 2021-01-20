@@ -3,44 +3,89 @@ import 'font-awesome/css/font-awesome.min.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import axios from 'axios';
 import { useHistory } from 'react-router-dom';
-import { Dropdown, Button } from 'react-bootstrap';
+import { Dropdown, Button, Text } from 'react-bootstrap';
 import Modal from 'react-bootstrap/Modal';
 
 const CarList = ({}) => {
     const history = useHistory();
     const [cars, setCars] = useState([]);
-    const [show, setShow] = useState(false);
-    const handleClose = () => setShow(false);
-    const handleShow = () => setShow(true);
+    const [type, setType] = useState("");
+    const [code, setCode] = useState("");
+    const [showDetail, setShowDetail] = useState(false);
+    const handleCloseDetail = () => setShowDetail(false);
+    const handleShowDetail = () => setShowDetail(true);
+    const [showUpdate, setShowUpdate] = useState(false);
+    const handleCloseUpdate = () => setShowUpdate(false);
+    const handleShowUpdate = () => setShowUpdate(true);
+    const [showAdd, setShowAdd] = useState(false);
+    const handleCloseAdd = () => setShowAdd(false);
+    const handleShowAdd = () => setShowAdd(true);
     useEffect(async ()=>{
         try {
             const api = `http://localhost:8000/vehicles`;
             const res = await axios.get(api);
             console.log(res);
-            setCars(res.data);
+            setCars(res.data.vehicles);
           } catch (err) {
             console.log(err.response);
           }
     },[])
-    const CarDetail = ({}) => {
+    const handleChangeType = (e) => {
+        e.preventDefault();
+        setType(e.target.value);
+    }
+    const handleChangeCode = (e) => {
+        e.preventDefault();
+        setCode(e.target.value);
+    }
+    const handleAddCar = async (e) => {
+        e.preventDefault();
+        const api = `http://localhost:8000/vehicles`;
+        const res = await axios.post(api, {type: type, number: code},{
+            headers: {
+              Authorization: localStorage.getItem('token')
+            }
+        });
+        if(res.data){
+            setCars(cars.concat(res.data.vehicle));
+        }
+        handleCloseAdd();
+    }
+    const handleDeleteCar = async (id) => {
+        console.log("DEBUG: delete", id);
+        const api = `http://localhost:8000/vehicles/${id}`;
+        const res = await axios.delete(api,{
+            headers: {
+              Authorization: localStorage.getItem('token')
+            }
+        });
+        let newCars = cars;
+        for(let i = 0 ; i < cars.length ; i++){
+            if(cars[i]._id === id){
+                newCars.splice(i, 1);
+            }
+        }
+        setCars(newCars.slice());
+    }
+    const CarDetail = () => {
         return(
             <div>
                 <div class="form-group row">
                     <label for="staticEmail" class="col-sm-2 col-form-label">Mã xe:</label>
                     <div class="col-sm-10">
-                        <input class="col-sm-8 form-control" type="text" name="name" placeholder="Nhập mã" />
+                        <input class="col-sm-8 form-control" type="text" name="name" placeholder="Nhập mã"  />
                     </div>
                 </div>
                 <div class="form-group row">
                     <label for="staticEmail" class="col-sm-2 col-form-label">Biển số xe:</label>
                     <div class="col-sm-10">
-                        <input class="col-sm-8 form-control" type="text" name="name" placeholder="Nhập biển số xe" />
+                        <input class="col-sm-8 form-control" type="text" name="name" placeholder="Nhập biển số xe" onChange={handleChangeCode} value={code} autoFocus={true}/>
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="staticEmail" class="col-sm-2 col-form-label">Loại xe:</label>
+                    <label for="staticEmail" class="col-sm-2 col-form-label" >Loại xe:</label>
                     <div class="col-sm-10">
-                        <input class="col-sm-8 form-control" type="text" name="name" placeholder="Nhập loại xe" />
+                        <input class="col-sm-8 form-control" type="text" name="name" placeholder="Nhập loại xe" onChange={handleChangeType} value={type} autoFocus={true}/>
                     </div>
                 </div>
             </div>
@@ -50,8 +95,8 @@ const CarList = ({}) => {
 		<div>
             <Modal 
                 size="lg"
-                show={show} 
-                onHide={handleClose} 
+                show={showAdd} 
+                onHide={handleCloseAdd} 
                 animation={true}  
                 //dialogClassName="modal-90w"  
                 aria-labelledby="example-modal-sizes-title-lg"
@@ -63,11 +108,11 @@ const CarList = ({}) => {
                     <CarDetail/>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button variant="secondary" onClick={handleClose}>
+                    <Button variant="secondary" onClick={handleCloseAdd}>
                         Close
                     </Button>
-                    <Button variant="primary" onClick={handleClose}>
-                        Save Changes
+                    <Button variant="primary" onClick={handleAddCar}>
+                        Add
                     </Button>
                 </Modal.Footer>
             </Modal>
@@ -132,6 +177,23 @@ const CarList = ({}) => {
                             </div>
                         </td>
                     </tr>
+                    {
+                        cars.map((item)=>{
+                            return(
+                                <tr>
+                                    <th class="ma-xe">{item._id.slice(6)}</th>
+                                    <td>{item.number ? item.number : "93T8-3851"}</td>
+                                    <td>{item.type}</td>
+                                    <td>
+                                        <div class="row">
+                                            <button><i className="fa fa-edit mr-2 col-2" aria-hidden="true"></i></button>
+                                            <button  onClick={()=>{handleDeleteCar(item._id)}}><i className="fa fa-trash mr-2 col-2" aria-hidden="true"></i></button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            )
+                        })
+                    }
                 </tbody>
             </table>
         </div>
