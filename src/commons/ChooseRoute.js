@@ -86,12 +86,16 @@ const MiniName = styled.p`
 const ChooseRoute = ({}) => {
 	const history = useHistory();
 	const [isOW, setIsOW] = useState(true);
+
 	const _onSubmit = (e)=>{
 		e.preventDefault();
 		console.log("Fix: " + isOW);
 		history.push({
 			pathname: "/booking/step2",
-			isOneWay: isOW
+			isOneWay: isOW,
+			start: "Sài Gòn",
+			end: "Tiền Giang",
+			date: "2021-12-12"
 		});
 	}
 	const handleClickOW = () => {
@@ -99,7 +103,7 @@ const ChooseRoute = ({}) => {
 	}
 	const handleClickTW = () => {
 		console.log("Checked");
-		setIsOW(false);
+		setIsOW(true);
 	}
 	return (
 		<ChooseRouteContainer>
@@ -122,10 +126,10 @@ const ChooseRoute = ({}) => {
 						<option selected disabled hidden>
 							Chọn điểm đi
 						</option>
-						<option value="dl">Đà Lạt</option>
-						<option value="vt">Vũng Tàu</option>
-						<option value="tg">Tiền Giang</option>
-						<option value="nt">Ninh Thuận</option>
+						<option value="Đà Lạt">Đà Lạt</option>
+						<option value="Sài Gòn">Sài Gòn</option>
+						<option value="Tiền Giang">Tiền Giang</option>
+						<option value="Vũng Tàu">Ninh Thuận</option>
 					</TextInput>
 				</VMiniContainer>
 				<RoundButtonContainer>
@@ -139,10 +143,10 @@ const ChooseRoute = ({}) => {
 						<option selected disabled hidden>
 							Chọn điểm đến
 						</option>
-						<option value="dl">Đà Lạt</option>
-						<option value="vt">Vũng Tàu</option>
-						<option value="tg">Tiền Giang</option>
-						<option value="nt">Ninh Thuận</option>
+						<option value="Đà Lạt">Đà Lạt</option>
+						<option value="Sài Gòn">Sài Gòn</option>
+						<option value="Tiền Giang">Tiền Giang</option>
+						<option value="Vũng Tàu">Ninh Thuận</option>
 					</TextInput>
 				</VMiniContainer>
 				<VMiniContainer style={{ width: "17%" }}>

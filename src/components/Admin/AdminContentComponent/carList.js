@@ -9,11 +9,21 @@ import Modal from 'react-bootstrap/Modal';
 const CarList = ({}) => {
     const history = useHistory();
     const [cars, setCars] = useState([]);
-    const [show, setShow] = useState(false);
     const [type, setType] = useState("");
     const [code, setCode] = useState("");
-    const handleClose = () => setShow(false);
-    const handleShow = () => setShow(true);
+    const [showDetail, setShowDetail] = useState(false);
+    const handleCloseDetail = () => setShowDetail(false);
+    const handleShowDetail = () => setShowDetail(true);
+    const [showUpdate, setShowUpdate] = useState(false);
+    const handleCloseUpdate = () => setShowUpdate(false);
+    const handleShowUpdate = () => setShowUpdate(true);
+    const [showAdd, setShowAdd] = useState(false);
+    const handleCloseAdd = () => setShowAdd(false);
+    const handleShowAdd = () => setShowAdd(true);
+    const [showDelete, setShowDelete] = useState(false);
+    const handleCloseDelete = () => setShowDelete(false);
+    const handleShowDelete = () => setShowDelete(true);
+
     useEffect(async ()=>{
         try {
             const api = `http://localhost:8000/vehicles`;
@@ -43,7 +53,10 @@ const CarList = ({}) => {
         if(res.data){
             setCars(cars.concat(res.data.vehicle));
         }
-        handleClose();
+        handleCloseAdd();
+    }
+    const handleUpdateCar = async (e) => {
+        handleCloseUpdate();
     }
     const handleDeleteCar = async (id) => {
         console.log("DEBUG: delete", id);
@@ -60,8 +73,9 @@ const CarList = ({}) => {
             }
         }
         setCars(newCars.slice());
+        handleCloseDelete();
     }
-    const CarDetail = () => {
+    const CarAdd = () => {
         return(
             <div>
                 <div class="form-group row">
@@ -85,24 +99,103 @@ const CarList = ({}) => {
             </div>
         )
     }
+    const CarUpdate = () => {
+        return(
+            <div>
+                <div class="form-group row">
+                    <label for="staticEmail" class="col-sm-2 col-form-label">Mã xe:</label>
+                    <div class="col-sm-10">
+                        <input class="col-sm-8 form-control" type="text" name="name" placeholder="Nhập mã" value={"code"} >
+                        </input>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="staticEmail" class="col-sm-2 col-form-label">Biển số xe:</label>
+                    <div class="col-sm-10">
+                        <input class="col-sm-8 form-control" type="text" name="name" placeholder="Nhập biển số xe" onChange={handleChangeCode} value={"code"} autoFocus={true}>
+                        </input>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="staticEmail" class="col-sm-2 col-form-label" >Loại xe:</label>
+                    <div class="col-sm-10">
+                        <input class="col-sm-8 form-control" type="text" name="name" placeholder="Nhập loại xe" onChange={handleChangeType} value={"type"} autoFocus={true}>
+                        </input>
+                    </div>
+                </div>
+            </div>
+        )
+    }
+    const CarDetail = () => {
+        return(
+            <div>
+                <div class="form-group row">
+                    <label for="staticEmail" class="col-sm-2 col-form-label">Mã xe:</label>
+                    <div class="col-sm-10">
+                        <a class="col-sm-8 form-control" >
+                            XE123    
+                        </a>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="staticEmail" class="col-sm-2 col-form-label">Biển số xe:</label>
+                    <div class="col-sm-10">
+                        <a class="col-sm-8 form-control" >
+                            123-456
+                        </a>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="staticEmail" class="col-sm-2 col-form-label" >Loại xe:</label>
+                    <div class="col-sm-10">
+                        <a class="col-sm-8 form-control" >
+                            Xe giường nằm 34
+                        </a>
+                    </div>
+                </div>
+            </div>
+        )
+    }
 	return (
 		<div>
-            <Modal 
+             <Modal 
                 size="lg"
-                show={show} 
-                onHide={handleClose} 
+                show={showDelete} 
+                onHide={handleCloseDelete} 
                 animation={true}  
                 //dialogClassName="modal-90w"  
                 aria-labelledby="example-modal-sizes-title-lg"
             >
                 <Modal.Header closeButton>
-                    <Modal.Title>Thêm chuyến xe</Modal.Title>
+                    <Modal.Title>Bạn có chắc muốn xóa xe này?</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <CarDetail/>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button variant="secondary" onClick={handleClose}>
+                    <Button variant="secondary" onClick={handleCloseDelete}>
+                        Close
+                    </Button>
+                    <Button variant="primary" onClick={handleDeleteCar}>
+                        Delete
+                    </Button>
+                </Modal.Footer>
+            </Modal>
+            <Modal 
+                size="lg"
+                show={showAdd} 
+                onHide={handleCloseAdd} 
+                animation={true}  
+                //dialogClassName="modal-90w"  
+                aria-labelledby="example-modal-sizes-title-lg"
+            >
+                <Modal.Header closeButton>
+                    <Modal.Title>Thêm xe</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <CarAdd/>
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={handleCloseAdd}>
                         Close
                     </Button>
                     <Button variant="primary" onClick={handleAddCar}>
@@ -110,11 +203,54 @@ const CarList = ({}) => {
                     </Button>
                 </Modal.Footer>
             </Modal>
+            <Modal 
+                size="lg"
+                show={showDetail} 
+                onHide={handleCloseDetail} 
+                animation={true}  
+                //dialogClassName="modal-90w"  
+                aria-labelledby="example-modal-sizes-title-lg"
+            >
+                <Modal.Header closeButton>
+                    <Modal.Title>Thông tin chi tiết xe</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <CarDetail/>
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={handleCloseDetail}>
+                        Close
+                    </Button>
+                </Modal.Footer>
+            </Modal>
+            <Modal 
+                size="lg"
+                show={showUpdate} 
+                onHide={handleCloseUpdate} 
+                animation={true}  
+                //dialogClassName="modal-90w"  
+                aria-labelledby="example-modal-sizes-title-lg"
+            >
+                <Modal.Header closeButton>
+                    <Modal.Title>Chỉnh sửa thông tin xe</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <CarUpdate/>
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={handleCloseUpdate}>
+                        Close
+                    </Button>
+                    <Button variant="primary" onClick={handleUpdateCar}>
+                        Update
+                    </Button>
+                </Modal.Footer>
+            </Modal>
             <div class="row liner">
                 <label class="col-sm-4 header-table">Quản lý Xe</label>
                 <div></div>
                 <label class="col-sm-6 header-table"></label>
-                <label class="col-sm-2 add-button" onClick={handleShow}>+ Thêm mới</label>
+                <label class="col-sm-2 add-button" onClick={handleShowAdd}>+ Thêm mới</label>
             </div> 
 
             <div class="row up-space">
@@ -139,9 +275,35 @@ const CarList = ({}) => {
                         <td>Giường nằm</td>
                         <td>
                             <div class="row">
-                                    <button><i className="fa fa-edit mr-2 col-2" aria-hidden="true"></i></button>
-                                    <button><i className="fa fa-trash mr-2 col-2" aria-hidden="true"></i></button>
-                                    {/* <i className="fa fa-align-justify mr-2 col-2" aria-hidden="true" onClick={handleShow}></i> */}
+                                <button class="icon-btn" onClick={handleShowUpdate} data-toggle="tooltip" data-placement="right" title="Sửa thông tin"><i className="fa fa-edit " aria-hidden="true" ></i></button>
+                                <button class="icon-btn" onClick={handleShowDelete} data-toggle="tooltip" data-placement="right" title="Xóa xe"><i className="fa fa-trash " aria-hidden="true" ></i></button>
+                                <button class="icon-btn" onClick={handleShowDetail} data-toggle="tooltip" data-placement="right" title="Xem chi tiết" ><i className="fa fa-align-justify " aria-hidden="true" ></i></button>
+                            </div>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <th class="ma-xe">123</th>
+                        <td>51E-152.63</td>
+                        <td>Phòng nằm</td>
+                        <td>
+                            <div class="row">
+                                <button class="icon-btn" data-toggle="tooltip" data-placement="right" title="Sửa thông tin"><i className="fa fa-edit " aria-hidden="true" ></i></button>
+                                <button class="icon-btn" data-toggle="tooltip" data-placement="right" title="Xóa xe"><i className="fa fa-trash " aria-hidden="true" ></i></button>
+                                <button class="icon-btn" data-toggle="tooltip" data-placement="right" title="Xem chi tiết" ><i className="fa fa-align-justify " aria-hidden="true" ></i></button>
+                            </div>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <th class="ma-xe">123</th>
+                        <td>51E-152.63</td>
+                        <td>Ghế ngồi</td>
+                        <td>
+                            <div class="row">
+                            <button class="icon-btn" data-toggle="tooltip" data-placement="right" title="Sửa thông tin"><i className="fa fa-edit " aria-hidden="true" ></i></button>
+                                <button class="icon-btn" data-toggle="tooltip" data-placement="right" title="Xóa xe"><i className="fa fa-trash " aria-hidden="true" ></i></button>
+                                <button class="icon-btn" data-toggle="tooltip" data-placement="right" title="Xem chi tiết" ><i className="fa fa-align-justify " aria-hidden="true" ></i></button>
                             </div>
                         </td>
                     </tr>

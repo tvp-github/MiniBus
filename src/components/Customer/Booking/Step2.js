@@ -50,6 +50,9 @@ const Step2 = (props) => {
 	const [tickets, setTickets] = useState([]);
 	const [ticketsBack, setTicketsBack] = useState([]);
 	console.log("Debug: " , props.location.isOneWay);
+	const start = props.location.start;
+	const end = props.location.end;
+	const date = props.location.date;
 	const oneWay = props.location.isOneWay;
 	const history = useHistory();
 	const handlePickTicket = (ele) => {
@@ -88,7 +91,7 @@ const Step2 = (props) => {
 							: { justifyContent: "space-between" }
 					}
 				>
-					<ChooseSeat handleClick={(ele) => handlePickTicket(ele)} tickets ={tickets}/>
+					<ChooseSeat handleClick={(ele) => handlePickTicket(ele)} tickets ={tickets} start={start} end = {end} date={date}/>
 					{!oneWay && <ChooseSeat handleClick={(ele) => handlePickTicketBack(ele)} tickets ={ticketsBack}/>}
 				</HContainer>
 				<HContainer>
