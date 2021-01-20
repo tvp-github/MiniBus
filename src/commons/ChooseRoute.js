@@ -147,12 +147,11 @@ const ChooseRoute = ({}) => {
 				</VMiniContainer>
 				<VMiniContainer style={{ width: "17%" }}>
 					<MiniName>Chọn ngày đi</MiniName>
-					<DateInput type="date" value="" placeholder="Từ ngày" />
+					<DateInput type="date" placeholder="Từ ngày" />
 				</VMiniContainer>
 				<VMiniContainer style={{ width: "17%" }}>
 					<MiniName>Chọn ngày đến</MiniName>
-
-					<DateInput type="date" value="" placeholder="Đến ngày" />
+					<DateInput type="date" placeholder="Đến ngày" />
 				</VMiniContainer>
 			</HorizontalContainer>
 			<HorizontalContainer>
