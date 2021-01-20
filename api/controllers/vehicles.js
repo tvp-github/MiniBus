@@ -29,6 +29,7 @@ async function getVehicleById(req, res) {
 
 async function createVehicle(req, res) {
   try {
+    console.log(req.body);
     // Create vehicle
     const newVehicle = new Vehicle({
       type: req.body.type
@@ -39,6 +40,7 @@ async function createVehicle(req, res) {
       vehicle: newVehicle
     });
   } catch (err) {
+    console.log(err.message);
     res.status(500).json({
       msg: 'Server error'
     });

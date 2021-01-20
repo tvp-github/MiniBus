@@ -3,13 +3,15 @@ import 'font-awesome/css/font-awesome.min.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import axios from 'axios';
 import { useHistory } from 'react-router-dom';
-import { Dropdown, Button } from 'react-bootstrap';
+import { Dropdown, Button, Text } from 'react-bootstrap';
 import Modal from 'react-bootstrap/Modal';
 
 const CarList = ({}) => {
     const history = useHistory();
     const [cars, setCars] = useState([]);
     const [show, setShow] = useState(false);
+    const [type, setType] = useState("");
+    const [code, setCode] = useState("");
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
     useEffect(async ()=>{
@@ -22,25 +24,42 @@ const CarList = ({}) => {
             console.log(err.response);
           }
     },[])
-    const CarDetail = ({}) => {
+    const handleChangeType = (e) => {
+        e.preventDefault();
+        setType(e.target.value);
+    }
+    const handleChangeCode = (e) => {
+        e.preventDefault();
+        setCode(e.target.value);
+    }
+    const handleAddCar = async (e) => {
+        e.preventDefault();
+        const api = `http://localhost:8000/vehicles`;
+        const res = await axios.post(api, {type: type, code: code});
+        setCars((cars)=>{
+            cars.concat(res.data.vehicle);
+        })
+        handleClose();
+    }
+    const CarDetail = () => {
         return(
             <div>
                 <div class="form-group row">
                     <label for="staticEmail" class="col-sm-2 col-form-label">Mã xe:</label>
                     <div class="col-sm-10">
-                        <input class="col-sm-8 form-control" type="text" name="name" placeholder="Nhập mã" />
+                        <input class="col-sm-8 form-control" type="text" name="name" placeholder="Nhập mã"  />
                     </div>
                 </div>
                 <div class="form-group row">
                     <label for="staticEmail" class="col-sm-2 col-form-label">Biển số xe:</label>
                     <div class="col-sm-10">
-                        <input class="col-sm-8 form-control" type="text" name="name" placeholder="Nhập biển số xe" />
+                        <input class="col-sm-8 form-control" type="text" name="name" placeholder="Nhập biển số xe" onChange={handleChangeCode} value={code} autoFocus={true}/>
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="staticEmail" class="col-sm-2 col-form-label">Loại xe:</label>
+                    <label for="staticEmail" class="col-sm-2 col-form-label" >Loại xe:</label>
                     <div class="col-sm-10">
-                        <input class="col-sm-8 form-control" type="text" name="name" placeholder="Nhập loại xe" />
+                        <input class="col-sm-8 form-control" type="text" name="name" placeholder="Nhập loại xe" onChange={handleChangeType} value={type} autoFocus={true}/>
                     </div>
                 </div>
             </div>
@@ -66,8 +85,8 @@ const CarList = ({}) => {
                     <Button variant="secondary" onClick={handleClose}>
                         Close
                     </Button>
-                    <Button variant="primary" onClick={handleClose}>
-                        Save Changes
+                    <Button variant="primary" onClick={handleAddCar}>
+                        Add
                     </Button>
                 </Modal.Footer>
             </Modal>
