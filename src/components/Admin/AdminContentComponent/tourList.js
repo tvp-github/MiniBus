@@ -35,6 +35,7 @@ const TourList = ({}) => {
     },[])
 
     const handleAddTour = async () => {
+        console.log(cars);
         const model = {};
         model.vehicle = cars[0]._id;
         model.time_start = Date.now();
@@ -53,7 +54,36 @@ const TourList = ({}) => {
         let newTrip = res.data.trip;
         console.log(tours);
         setTours(tours.concat(newTrip));
+        const apiTicket = `http://localhost:8000/tickets`;
+        for(let i = 0; i < 10 ; i ++ ){
+            let ticket = {};
+            ticket.position = "A" + (i+1);
+            ticket.trip = newTrip._id;
+            await axios.post(apiTicket, ticket,{
+                headers: {
+                    Authorization: localStorage.getItem('token')
+                }
+            });
+        }
+
         handleClose();
+    }
+
+    const handleDeleteTour = async (id) => {
+        console.log("DEBUG: delete", id);
+        const api = `http://localhost:8000/trips/${id}`;
+        const res = await axios.delete(api,{
+            headers: {
+              Authorization: localStorage.getItem('token')
+            }
+        });
+        let newTours = tours;
+        for(let i = 0 ; i < tours.length ; i++){
+            if(tours[i]._id === id){
+                newTours.splice(i, 1);
+            }
+        }
+        setCars(newTours.slice());
     }
 
     const TourDetail = ({}) => {
@@ -175,9 +205,9 @@ const TourList = ({}) => {
                                 <td>{item.vehicle.type}</td>
                                 <td>
                                     <div class="row">
-                                            <i className="fa fa-edit mr-2 col-2" aria-hidden="true"></i>
-                                            <i className="fa fa-trash mr-2 col-2" aria-hidden="true"></i>
-                                            <i className="fa fa-align-justify mr-2 col-2" aria-hidden="true" onClick={handleShow}></i>
+                                            <button><i className="fa fa-edit mr-2 col-2" aria-hidden="true"></i></button>
+                                            <button onClick={()=>{handleDeleteTour(item._id)}}><i className="fa fa-trash mr-2 col-2" aria-hidden="true"></i></button>
+                                            <button><i className="fa fa-align-justify mr-2 col-2" aria-hidden="true" onClick={handleShow}></i></button>
                                     </div>
                                 </td>
                                 

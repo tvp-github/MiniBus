@@ -28,6 +28,7 @@ async function getTicketById(req, res) {
 async function createTicket(req, res) {
   try {
     // Create ticket
+    console.log(req.body);
     const newTicket = new Ticket(req.body);
     await newTicket.save();
 
