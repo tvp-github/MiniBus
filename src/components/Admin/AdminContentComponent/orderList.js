@@ -6,11 +6,20 @@ import Modal from 'react-bootstrap/Modal';
 import axios from 'axios';
 import { useHistory } from 'react-router-dom';
 const OrderList = ({}) => {
-    const [show, setShow] = useState(false);
     const [orders, setOrders] = useState([]);
-    const handleClose = () => setShow(false);
-    const handleShow = () => setShow(true);
     const history = useHistory();
+    const [showDetail, setShowDetail] = useState(false);
+    const handleCloseDetail = () => setShowDetail(false);
+    const handleShowDetail = () => setShowDetail(true);
+    const [showUpdate, setShowUpdate] = useState(false);
+    const handleCloseUpdate = () => setShowUpdate(false);
+    const handleShowUpdate = () => setShowUpdate(true);
+    const [showAdd, setShowAdd] = useState(false);
+    const handleCloseAdd = () => setShowAdd(false);
+    const handleShowAdd = () => setShowAdd(true);
+    const [showDelete, setShowDelete] = useState(false);
+    const handleCloseDelete = () => setShowDelete(false);
+    const handleShowDelete = () => setShowDelete(true);
     useEffect(async ()=>{
         try {
             const api = `http://localhost:8000/bills`;
@@ -21,7 +30,9 @@ const OrderList = ({}) => {
             console.log(err.response);
           }
     },[])
-    
+    const handleDeleteOrder = () =>{
+        handleCloseDelete()
+    }
     const OrderDetail = ({}) => {
         return(
             <div>
@@ -101,10 +112,33 @@ const OrderList = ({}) => {
 
 	return (
 		<div>
+            
             <Modal 
                 size="lg"
-                show={show} 
-                onHide={handleClose} 
+                show={showDelete} 
+                onHide={handleCloseDelete} 
+                animation={true}  
+                //dialogClassName="modal-90w"  
+                aria-labelledby="example-modal-sizes-title-lg"
+            >
+                <Modal.Header closeButton>
+                    <Modal.Title>Bạn có chắc muốn xóa đơn hàng này?</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={handleCloseDelete}>
+                        Close
+                    </Button>
+                    <Button variant="primary" onClick={handleDeleteOrder}>
+                        Delete
+                    </Button>
+                </Modal.Footer>
+            </Modal>
+            <Modal 
+                size="lg"
+                show={showDetail} 
+                onHide={handleCloseDetail} 
                 animation={true}  
                 //dialogClassName="modal-90w"  
                 aria-labelledby="example-modal-sizes-title-lg"
@@ -116,10 +150,10 @@ const OrderList = ({}) => {
                     <OrderDetail/>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button variant="secondary" onClick={handleClose}>
+                    <Button variant="secondary" onClick={handleCloseDetail}>
                         Close
                     </Button>
-                    <Button variant="primary" onClick={handleClose}>
+                    <Button variant="primary" onClick={handleCloseDetail}>
                         Save Changes
                     </Button>
                 </Modal.Footer>
@@ -128,7 +162,7 @@ const OrderList = ({}) => {
                                 <label class="col-sm-4 header-table">Quản lý Đơn Hàng</label>
                                 <div></div>
                                 <label class="col-sm-6 header-table"></label>
-                                <label class="col-sm-2 add-button">+ Thêm mới</label>
+                                
                             </div>
                             <div class="row up-space">
                                 <input class="col-sm-4 form-control" type="text" name="name" placeholder="Tìm kiếm" />
@@ -162,6 +196,7 @@ const OrderList = ({}) => {
                                         <th scope="col">Tổng Tiền</th>
                                         <th scope="col">Trạng thái đơn hàng</th>
                                         <th scope="col">Thao tác</th>
+                                        <th scope="col">Xác nhận</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -172,13 +207,15 @@ const OrderList = ({}) => {
                                         <td>0385909888</td>
                                         <td>960.000</td>
                                         <td class="trang-thai-don-hang-wait">Đang chờ thanh toán</td>
+                                        <td><button class="confirm-btn mt-0 mb-0">Xác nhận thanh toán</button></td>
                                         <td>
                                             <div class="row">
-                                                    <button class="icon-btn" data-toggle="tooltip" data-placement="right" title="Xóa đơn hàng"><i className="fa fa-trash " aria-hidden="true" ></i></button>
+                                                    <button class="icon-btn" onClick={handleShowDelete} data-toggle="tooltip" data-placement="right" title="Xóa đơn hàng"><i className="fa fa-trash " aria-hidden="true" ></i></button>
                                                     <button class="icon-btn" data-toggle="tooltip" data-placement="right" title="Hủy đơn hàng"><i className="fa fa-times-circle " aria-hidden="true" ></i></button>
-                                                    <button class="icon-btn" data-toggle="tooltip" data-placement="right" title="Xem chi tiết" onClick={handleShow}><i className="fa fa-align-justify " aria-hidden="true" ></i></button>
+                                                    <button class="icon-btn" data-toggle="tooltip" data-placement="right" title="Xem chi tiết" onClick={handleShowDetail}><i className="fa fa-align-justify " aria-hidden="true" ></i></button>
                                             </div>
                                         </td>
+                                        
                                     </tr>
                                     {
                                         orders.map((item)=>{
@@ -189,14 +226,16 @@ const OrderList = ({}) => {
                                                     <td>{item.user.name}</td>
                                                     <td>{item.user.phone}</td>
                                                     <td>960.000</td>
+                                                    <td><button class="confirm-btn">Xác nhận thanh toán</button></td>
                                                     <td class="trang-thai-don-hang-wait">Đang chờ thanh toán</td>
                                                     <td>
                                                         <div class="row">
                                                                 <i className="fa fa-edit mr-2 col-2" aria-hidden="true"></i>
                                                                 <i className="fa fa-trash mr-2 col-2" aria-hidden="true"></i>
-                                                                <i className="fa fa-align-justify mr-2 col-2" aria-hidden="true" onClick={handleShow}></i>
+                                                                <i className="fa fa-align-justify mr-2 col-2" aria-hidden="true" onClick={handleShowDetail}></i>
                                                         </div>
                                                     </td>
+                                                   
                                                 </tr>
                                             )
                                         })
