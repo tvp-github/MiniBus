@@ -17,4 +17,10 @@ router.route('/:id')
   .put(auth, ticCtrl.updateTicketById)
   .delete(auth, ticCtrl.deleteTicketById);
 
+router.route('/trip/:id')
+  .get(ticCtrl.getTicketsWhereTripId)
+  .post()
+  .put()
+  .delete();
+
 module.exports = router;
