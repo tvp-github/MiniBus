@@ -129,7 +129,7 @@ const ChooseSeat = (props) => {
 	const tickets = props.tickets;
 	const {start, end, date} = props;
 	const {handleClick} = props;
-	const [time, setTime] = useState("6:30");
+	const [time, setTime] = useState(null);
 	const [tours, setTours] = useState([]);
 	const [tour, setTour] = useState(null); 
 	const [tourTickets, setTourTickets] = useState([]);
@@ -149,13 +149,14 @@ const ChooseSeat = (props) => {
           }
 	},[]);
 	useEffect(async () => {
+		console.log("Get ticket!!!");
 		if(!tour){
 			return;
 		}
 		try {
-            const api = `http://localhost:8000/ticket/trip/${tour._id}`;
+            const api = `http://localhost:8000/tickets/trip/${tour._id}`;
 			const res = await axios.get(api);
-			console.log(res.data.tickets);
+			console.log(res);
 			setTourTickets(res.data.tickets);
         } catch (err) {
             console.log(err.response);
@@ -168,7 +169,7 @@ const ChooseSeat = (props) => {
 
 	const searchtour = () => {
 		for(let i=0; i<tours.length; i++){
-			if(tours.start === start && tours.end === end && tours.time === time){
+			if(tours[i].start === start && tours[i].end === end){
 				return tours[i];
 			} 
 		}
@@ -247,8 +248,8 @@ const ChooseSeat = (props) => {
 					<MiniName>Tổng tiền</MiniName>
 				</HContainer>
                 <HContainer>
-							<RedMiniText>{tickets ? tickets.map((ticket)=>{return ticket.posision + " "}) : ""}</RedMiniText>
-					<RedMiniText>{tickets  ? tickets.length * 100000 : 0}đ</RedMiniText>
+							<RedMiniText>{tickets ? tickets.map((ticket)=>{return ticket.position + " "}) : ""}</RedMiniText>
+					<RedMiniText>{tickets  ? tickets.length * (tour ? tour.price : 0) : 0}đ</RedMiniText>
 				</HContainer>
 			</VMiniContainer>
 		</ChooseRouteContainer>
