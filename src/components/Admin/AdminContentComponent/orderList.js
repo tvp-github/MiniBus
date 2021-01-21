@@ -223,11 +223,17 @@ const OrderList = ({}) => {
                                                 <tr>
                                                     <th class="ma-don-hang">{item._id}</th>
                                                     <td>{item.time}</td>
-                                                    <td>{item.user.name}</td>
-                                                    <td>{item.user.phone}</td>
-                                                    <td>960.000</td>
-                                                    <td><button class="confirm-btn">Xác nhận thanh toán</button></td>
-                                                    <td class="trang-thai-don-hang-wait">Đang chờ thanh toán</td>
+                                                    <td>{item.customer.name}</td>
+                                                    <td>{item.customer.phone}</td>
+                                                    <td>{item.price}</td>
+                                                    <td class="trang-thai-don-hang-wait">{!item.status ? "Đang chờ thanh toán" : "Đã thanh toán"}</td>
+                                                    <td>
+                                                        {
+                                                            !item.status ?
+                                                            <button class="confirm-btn">Xác nhận thanh toán</button>:
+                                                            null
+                                                        }
+                                                    </td>
                                                     <td>
                                                         <div class="row">
                                                                 <i className="fa fa-edit mr-2 col-2" aria-hidden="true"></i>
