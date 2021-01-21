@@ -208,7 +208,7 @@ const ChooseSeat = (props) => {
 						tour ? (
 							<SeatContainer>
 								{tourTickets.map((ticket, index) => (
-									<Seat key={index} style={{ backgroundColor: colors.mid_grey }} onClick={()=> {handleClick(ticket)}}>
+									<Seat key={index} style={{ backgroundColor: !tickets.some(tk=>tk.position == ticket.position)?colors.light_blue:colors.mid_grey }} onClick={()=> {handleClick(ticket)}}>
 										<SeatText>{ticket.posision}</SeatText>
 									</Seat>
 								))}

@@ -49,7 +49,7 @@ const ButtonText = styled.p`
 const Step2 = (props) => {
 	const [tickets, setTickets] = useState([]);
 	const [ticketsBack, setTicketsBack] = useState([]);
-	console.log("Debug: " , props.location.isOneWay);
+	console.log("Debug: ", props.location.isOneWay);
 	const start = props.location.start;
 	const end = props.location.end;
 	const date = props.location.date;
@@ -57,28 +57,34 @@ const Step2 = (props) => {
 	const history = useHistory();
 	const handlePickTicket = (ticket) => {
 		console.log(ticket);
-		for(let i = 0; i<tickets.length; i++){
-			if(tickets[i]._id === ticket._id){
-				tickets.splice(i,1);
-				return;
-			}
-		}
-		setTickets(tickets.concat(ticket));
-	}
+		let flag = false;
+		let newTicket = tickets.filter((item) => {
+			if (item._id == ticket._id) flag = true;
+			return item._id !== ticket._id;
+		});
+		// for(let i = 0; i<tickets.length; i++){
+		// 	if(tickets[i]._id === ticket._id){
+		// 		setTickets([...tickets.splice(i+1,1)]);
+		// 		return;
+		// 	}
+		// }
+		if (!flag) newTicket = tickets.concat(ticket);
+		setTickets(newTicket);
+	};
 	const handlePickTicketBack = (ele) => {
-		let ticket = {pos: "A" + ele};
-		if(ticketsBack.includes(ticket)){
+		let ticket = { pos: "A" + ele };
+		if (ticketsBack.includes(ticket)) {
 			return;
 		}
 		setTicketsBack(ticketsBack.concat(ticket));
-	}
+	};
 	const handleNext = () => {
 		history.push({
-			pathname: '/booking/step3',
+			pathname: "/booking/step3",
 			tickets: tickets,
-			ticketsBack: ticketsBack
-		})
-	}
+			ticketsBack: ticketsBack,
+		});
+	};
 	return (
 		<>
 			<Header />
@@ -93,11 +99,22 @@ const Step2 = (props) => {
 							: { justifyContent: "space-between" }
 					}
 				>
-					<ChooseSeat handleClick={(ele) => handlePickTicket(ele)} tickets ={tickets} start={start} end = {end} date={date}/>
-					{!oneWay && <ChooseSeat handleClick={(ele) => handlePickTicketBack(ele)} tickets ={ticketsBack}/>}
+					<ChooseSeat
+						handleClick={(ele) => handlePickTicket(ele)}
+						tickets={tickets}
+						start={start}
+						end={end}
+						date={date}
+					/>
+					{!oneWay && (
+						<ChooseSeat
+							handleClick={(ele) => handlePickTicketBack(ele)}
+							tickets={ticketsBack}
+						/>
+					)}
 				</HContainer>
 				<HContainer>
-					<LeftButton onClick={()=>history.push("/")}>
+					<LeftButton onClick={() => history.push("/")}>
 						<ButtonText>
 							<FontAwesomeIcon icon={faArrowLeft} />
 							<span style={{ marginInline: 5 }}>Quay lại</span>
