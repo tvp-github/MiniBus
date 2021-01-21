@@ -281,8 +281,11 @@ const CarList = ({}) => {
                                     <td>{item.type}</td>
                                     <td>
                                         <div class="row">
-                                            <button><i className="fa fa-edit mr-2 col-2" aria-hidden="true"></i></button>
-                                            <button  onClick={()=>{handleDeleteCar(item._id)}}><i className="fa fa-trash mr-2 col-2" aria-hidden="true"></i></button>
+                                            {/* <button className="icon-btn"><i className="fa fa-edit mr-2 col-2" aria-hidden="true"></i></button>
+                                            <button className="icon-btn" onClick={()=>{handleDeleteCar(item._id)}}><i className="fa fa-trash mr-2 col-2" aria-hidden="true"></i></button>
+                                             */}
+                                        <button class="icon-btn" onClick={()=>handleUpdateCar(item._id)} data-toggle="tooltip" data-placement="right" title="Sửa thông tin"><i className="fa fa-edit " aria-hidden="true" ></i></button>
+                                        <button class="icon-btn" onClick={() => handleDeleteCar(item._id)} data-toggle="tooltip" data-placement="right" title="Xóa chuyến đi"><i className="fa fa-trash " aria-hidden="true" ></i></button>
                                         </div>
                                     </td>
                                 </tr>
