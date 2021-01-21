@@ -21,6 +21,7 @@ const TourList = ({}) => {
     const handleCloseAdd = () => setShowAdd(false);
     const handleShowAdd = () => setShowAdd(true);
     const [showDelete, setShowDelete] = useState(false);
+    const [trigger, setTrigger] = useState(false);
 
     const _start = useRef();
     const _end = useRef();
@@ -85,12 +86,11 @@ const TourList = ({}) => {
         try {
             const api = `http://localhost:8000/trips`;
             const res = await axios.get(api);
-            console.log(res);
             setTours(res.data.trips);
           } catch (err) {
             console.log(err.response);
           }
-    },[setTours])
+    },[trigger])
 
     const handleAddTour = async () => {
         console.log(cars);
@@ -109,9 +109,9 @@ const TourList = ({}) => {
                 Authorization: localStorage.getItem('token')
             }
         });
+
         console.log(res);
         let newTrip = res.data.trip;
-        console.log(tours);
         setTours(tours.concat(newTrip));
         const apiTicket = `http://localhost:8000/tickets`;
         for(let i = 0; i < 10 ; i ++ ){
@@ -124,6 +124,7 @@ const TourList = ({}) => {
                 }
             });
         }
+        setTrigger(!trigger);
         setShowAdd(false);
     }
 

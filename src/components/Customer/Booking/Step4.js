@@ -140,7 +140,7 @@ const Step4 = (props) => {
 		model.time = Date.now();
 		model.status = false;
 		model.ticket= tickets;
-		changeStatus();
+		await changeStatus();
 		const api = `http://localhost:8000/bills`;	
 		const res = await axios.post(api, model);
 		history.push("/booking/success")

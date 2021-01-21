@@ -142,7 +142,6 @@ const ChooseSeat = (props) => {
         try {
             const api = `http://localhost:8000/trips`;
 			const res = await axios.get(api);
-			console.log(res.data.trips);
 			setTours(res.data.trips);
 			handleSearchTour();
           } catch (err) {
@@ -167,8 +166,6 @@ const ChooseSeat = (props) => {
 
 	const handleSearchTour = async () => {
 		setTour(searchtour());
-		console.log("Change priec");
-		console.log(tour);
 		if(tour){
 			changePrice(tour.price);
 		}
@@ -187,14 +184,11 @@ const ChooseSeat = (props) => {
 		let sDate = date.split("-");
 		console.log(sDate);
 		let sTime = time ? time.split(":") : null;
-		console.log(sTime);
 		let timeStart = new Date(Date.UTC(sDate[0],sDate[1],sDate[2],sTime[0], sTime[1]));
 		let miStart = timeStart.getTime();
 		for(let i=0; i<tours.length; i++){
-			console.log("Cal", miStart);
 			let tourTime = new Date(tours[i].time_start);
 			let miTour = tourTime.getTime();
-			console.log("Time server: " + miTour);
 			if(tours[i].start === start && tours[i].end === end && miStart === miTour){
 				return tours[i];
 			} 
@@ -234,7 +228,7 @@ const ChooseSeat = (props) => {
 						tour ? (
 							<SeatContainer>
 								{tourTickets.map((ticket, index) => (
-									<Seat key={index} style={{ backgroundColor: !tickets.status ? (!tickets.some(tk=>tk.position == ticket.position)?colors.light_blue:colors.yellow):colors.grey}} onClick={()=> {handleClick(ticket)}}>
+									<Seat key={index} style={{ backgroundColor: !ticket.status ? (!tickets.some(tk=>tk.position == ticket.position)?colors.light_blue:colors.yellow) : colors.mid_grey}} onClick={()=> {if(!ticket.status) handleClick(ticket)}}>
 										<SeatText>{ticket.position}</SeatText>
 									</Seat>
 								))}

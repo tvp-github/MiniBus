@@ -14,7 +14,7 @@ router.route('/')
 router.route('/:id')
   .get(ticCtrl.getTicketById)
   .post()
-  .put(auth, ticCtrl.updateTicketById)
+  .put(ticCtrl.updateTicketById)
   .delete(auth, ticCtrl.deleteTicketById);
 
 router.route('/trip/:id')

@@ -60,6 +60,7 @@ async function createTicket(req, res) {
 }
 
 async function updateTicketById(req, res) {
+  console.log("update ticket");
   try {
     await Ticket.findByIdAndUpdate(req.params.id, req.body);
 
@@ -67,6 +68,7 @@ async function updateTicketById(req, res) {
       msg: 'Update ticket success'
     });
   } catch (err) {
+    console.log(err.message);
     res.status(500).json({
       msg: 'Server error'
     });
