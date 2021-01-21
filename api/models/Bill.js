@@ -18,6 +18,11 @@ const BillSchema = new mongoose.Schema({
   time: {
     type: Date,
     default: Date.now()
+  },
+  price: {
+    type: Number,
+    min: 0,
+    required: true
   }
 });
 

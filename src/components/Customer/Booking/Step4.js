@@ -9,6 +9,7 @@ import FatFooter from "../../../commons/FatFooter";
 import { useHistory } from "react-router-dom";
 import MiniProgressBar from "../../../commons/MiniProgressBar";
 import ChooseSeat from "../../../commons/ChooseSeat";
+import axios from "axios";
 const BarContainer = styled.div`
 	padding: 40px 5%;
 `;
@@ -129,6 +130,29 @@ const Step4 = (props) => {
 	const price = props.location.price;
 	console.log("AAAAAAAAAAAAAA");
 	console.log(price);
+	const handleCreateBill = async() => {
+		let model = {};
+		model.name = name;
+		model.phone = phone;
+		model.email = email;
+		model.address = "no address";
+		model.price = price * tickets.length;
+		model.time = Date.now();
+		model.status = false;
+		model.ticket= tickets;
+		changeStatus();
+		const api = `http://localhost:8000/bills`;	
+		const res = await axios.post(api, model);
+		history.push("/booking/success")
+	}
+	const changeStatus = async () => {
+		for(let i=0 ; i<tickets.length; i++){
+			let ticket = tickets[i];
+			ticket.status = true;
+			const api = `http://localhost:8000/tickets/${tickets[i]._id}`;
+			const res = await axios.put(api,ticket);
+		}
+	}
 	return (
 		<>
 			<Header />
@@ -217,7 +241,7 @@ const Step4 = (props) => {
 						</ButtonText>
 					</LeftButton>
 					<RightButton
-						onClick={() => history.push("/booking/success")}
+						onClick={handleCreateBill}
 					>
 						<ButtonText>
 							<span style={{ marginInline: 5 }}>Hoàn tất</span>

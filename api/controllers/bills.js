@@ -33,12 +33,21 @@ async function getBillById(req, res) {
 }
 
 async function createBill(req, res) {
+  console.log("create bill");
   try {
     // Create customer
     const newCustomer = new Customer(req.body);
     await newCustomer.save();
     // Create bill
-    const newBill = new Bill(req.body);
+
+    const { ticketId, status, time, price } = await req.body;
+    const newBill = new Bill({
+      ticket: ticketId,
+      customer: newCustomer._id,
+      status,
+      time,
+      price
+    });
     await newBill.save();
 
     res.status(201).json({
