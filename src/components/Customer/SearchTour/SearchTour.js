@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import Header from "../../../commons/Header";
 import MainContainer from "../../../commons/MainContainer";
 import FatFooter from "../../../commons/FatFooter";
@@ -9,6 +9,8 @@ import styled from "styled-components";
 import colors from "../../../values/colors"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBus, faSync } from "@fortawesome/free-solid-svg-icons";
+
+
 const ChooseRouteContainer = styled.div`
 	background-color: ${colors.white};
 	display: flex;
@@ -90,6 +92,10 @@ const MiniName = styled.p`
 `;
 
 const SearchTour = ({}) => {
+	const [tours, setTours] = useState([]);
+	const [tour, setTour] = useState(null);
+	const refStart = useRef();
+	const refEnd = useRef();
 	return (
 		<>
 			<Header />
@@ -109,15 +115,15 @@ const SearchTour = ({}) => {
             <HorizontalContainer style={{ justifyContent: "space-between" }}>
 				<VMiniContainer style={{ width: "26%" }}>
 					<MiniName>Chọn điểm đi</MiniName>
-					<TextInput>
+					<select ref={refStart}>
 						<option selected disabled hidden>
 							Chọn điểm đi
 						</option>
-						<option value="dl">Đà Lạt</option>
-						<option value="vt">Vũng Tàu</option>
-						<option value="tg">Tiền Giang</option>
-						<option value="nt">Ninh Thuận</option>
-					</TextInput>
+						<option value="Đà Lạt">Đà Lạt</option>
+						<option value="Sài Gòn">Sài Gòn</option>
+						<option value="Tiền Giang">Tiền Giang</option>
+						<option value="Vũng Tàu">Ninh Thuận</option>
+					</select>
 				</VMiniContainer>
 				<RoundButtonContainer>
 					<div>
@@ -126,7 +132,7 @@ const SearchTour = ({}) => {
 				</RoundButtonContainer>
 				<VMiniContainer style={{ width: "26%" }}>
 					<MiniName>Chọn điểm đến</MiniName>
-					<TextInput>
+					<select ref={refEnd}>
 						<option selected disabled hidden>
 							Chọn điểm đến
 						</option>
@@ -134,7 +140,7 @@ const SearchTour = ({}) => {
 						<option value="vt">Vũng Tàu</option>
 						<option value="tg">Tiền Giang</option>
 						<option value="nt">Ninh Thuận</option>
-					</TextInput>
+					</select>
 				</VMiniContainer>
 				<VMiniContainer style={{ width: "17%" }}>
 					<MiniName>Chọn ngày đi</MiniName>

@@ -272,44 +272,6 @@ const CarList = ({}) => {
                 </thead>
 
                 <tbody>
-                    <tr>
-                        <th class="ma-xe">123</th>
-                        <td>51E-152.63</td>
-                        <td>Giường nằm</td>
-                        <td>
-                            <div class="row">
-                                <button class="icon-btn" onClick={handleShowUpdate} data-toggle="tooltip" data-placement="right" title="Sửa thông tin"><i className="fa fa-edit " aria-hidden="true" ></i></button>
-                                <button class="icon-btn" onClick={handleShowDelete} data-toggle="tooltip" data-placement="right" title="Xóa xe"><i className="fa fa-trash " aria-hidden="true" ></i></button>
-                                <button class="icon-btn" onClick={handleShowDetail} data-toggle="tooltip" data-placement="right" title="Xem chi tiết" ><i className="fa fa-align-justify " aria-hidden="true" ></i></button>
-                            </div>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <th class="ma-xe">123</th>
-                        <td>51E-152.63</td>
-                        <td>Phòng nằm</td>
-                        <td>
-                            <div class="row">
-                                <button class="icon-btn" data-toggle="tooltip" data-placement="right" title="Sửa thông tin"><i className="fa fa-edit " aria-hidden="true" ></i></button>
-                                <button class="icon-btn" data-toggle="tooltip" data-placement="right" title="Xóa xe"><i className="fa fa-trash " aria-hidden="true" ></i></button>
-                                <button class="icon-btn" data-toggle="tooltip" data-placement="right" title="Xem chi tiết" ><i className="fa fa-align-justify " aria-hidden="true" ></i></button>
-                            </div>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <th class="ma-xe">123</th>
-                        <td>51E-152.63</td>
-                        <td>Ghế ngồi</td>
-                        <td>
-                            <div class="row">
-                            <button class="icon-btn" data-toggle="tooltip" data-placement="right" title="Sửa thông tin"><i className="fa fa-edit " aria-hidden="true" ></i></button>
-                                <button class="icon-btn" data-toggle="tooltip" data-placement="right" title="Xóa xe"><i className="fa fa-trash " aria-hidden="true" ></i></button>
-                                <button class="icon-btn" data-toggle="tooltip" data-placement="right" title="Xem chi tiết" ><i className="fa fa-align-justify " aria-hidden="true" ></i></button>
-                            </div>
-                        </td>
-                    </tr>
                     {
                         cars.map((item)=>{
                             return(
