@@ -131,7 +131,8 @@ const ChooseSeat = (props) => {
 	const {handleClick} = props;
 	const [time, setTime] = useState("6:30");
 	const [tours, setTours] = useState([]);
-	const [tour, setTour] = useState(null);
+	const [tour, setTour] = useState(null); 
+	const [tourTickets, setTourTickets] = useState([]);
 	const history = useHistory();
 	const _onSubmit = (e) => {
 		e.preventDefault();
