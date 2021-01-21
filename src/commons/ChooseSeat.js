@@ -148,6 +148,19 @@ const ChooseSeat = (props) => {
             console.log(err.response);
           }
 	},[]);
+	useEffect(async () => {
+		if(!tour){
+			return;
+		}
+		try {
+            const api = `http://localhost:8000/ticket/trip/${tour._id}`;
+			const res = await axios.get(api);
+			console.log(res.data.tickets);
+			setTourTickets(res.data.tickets);
+        } catch (err) {
+            console.log(err.response);
+        }
+	}, [tour])
 
 	const handleSearchTour = async () => {
 		setTour(searchtour());
@@ -193,9 +206,9 @@ const ChooseSeat = (props) => {
 					{
 						tour ? (
 							<SeatContainer>
-								{[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((ele, index) => (
-									<Seat key={index} style={{ backgroundColor: colors.mid_grey }} onClick={()=> {console.log(ele);handleClick(ele)}}>
-										<SeatText>A{ele}</SeatText>
+								{tourTickets.map((ticket, index) => (
+									<Seat key={index} style={{ backgroundColor: colors.mid_grey }} onClick={()=> {handleClick(ticket)}}>
+										<SeatText>{ticket.posision}</SeatText>
 									</Seat>
 								))}
 							</SeatContainer>
@@ -234,7 +247,7 @@ const ChooseSeat = (props) => {
 					<MiniName>Tổng tiền</MiniName>
 				</HContainer>
                 <HContainer>
-							<RedMiniText>{tickets ? tickets.map((item)=>{return item.pos + " "}) : ""}</RedMiniText>
+							<RedMiniText>{tickets ? tickets.map((ticket)=>{return ticket.posision + " "}) : ""}</RedMiniText>
 					<RedMiniText>{tickets  ? tickets.length * 100000 : 0}đ</RedMiniText>
 				</HContainer>
 			</VMiniContainer>

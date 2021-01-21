@@ -88,15 +88,17 @@ const ChooseRoute = ({}) => {
 	const [isOW, setIsOW] = useState(true);
 	const [fromDate, setFromDate] = useState("");
 	const [toDate, setToDate] = useState("");
+	const refStart = useRef();
+	const refEnd = useRef();
 	const _onSubmit = (e) => {
 		e.preventDefault();
 		console.log("Fix: " + isOW);
 		history.push({
 			pathname: "/booking/step2",
 			isOneWay: isOW,
-			start: "Sài Gòn",
-			end: "Tiền Giang",
-			date: "2021-12-12",
+			start: refStart.current.value,
+			end: refEnd.current.value,
+			date: fromDate
 		});
 	};
 	const handleClickOW = () => {
@@ -147,15 +149,15 @@ const ChooseRoute = ({}) => {
 			<HorizontalContainer style={{ justifyContent: "space-between" }}>
 				<VMiniContainer style={{ width: "26%" }}>
 					<MiniName>Chọn điểm đi</MiniName>
-					<TextInput>
+					<select ref={refStart}>
 						<option selected disabled hidden>
 							Chọn điểm đi
 						</option>
 						<option value="Đà Lạt">Đà Lạt</option>
 						<option value="Sài Gòn">Sài Gòn</option>
 						<option value="Tiền Giang">Tiền Giang</option>
-						<option value="Vũng Tàu">Ninh Thuận</option>
-					</TextInput>
+						<option value="Vũng Tàu">Vũng Tàu</option>
+					</select>
 				</VMiniContainer>
 				<RoundButtonContainer>
 					<div>
@@ -164,15 +166,15 @@ const ChooseRoute = ({}) => {
 				</RoundButtonContainer>
 				<VMiniContainer style={{ width: "26%" }}>
 					<MiniName>Chọn điểm đến</MiniName>
-					<TextInput>
+					<select ref={refEnd}>
 						<option selected disabled hidden>
 							Chọn điểm đến
 						</option>
 						<option value="Đà Lạt">Đà Lạt</option>
 						<option value="Sài Gòn">Sài Gòn</option>
 						<option value="Tiền Giang">Tiền Giang</option>
-						<option value="Vũng Tàu">Ninh Thuận</option>
-					</TextInput>
+						<option value="Vũng Tàu">vũng Tàu</option>
+					</select>
 				</VMiniContainer>
 				<VMiniContainer style={{ width: "17%" }}>
 					<MiniName>Chọn ngày đi</MiniName>

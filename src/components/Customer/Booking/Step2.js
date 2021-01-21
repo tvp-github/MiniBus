@@ -55,11 +55,13 @@ const Step2 = (props) => {
 	const date = props.location.date;
 	const oneWay = props.location.isOneWay;
 	const history = useHistory();
-	const handlePickTicket = (ele) => {
-		console.log(ele);
-		let ticket = {pos: "A" + ele};
-		if(tickets.includes(ticket)){
-			return;
+	const handlePickTicket = (ticket) => {
+		console.log(ticket);
+		for(let i = 0; i<tickets.length; i++){
+			if(tickets[i]._id === ticket._id){
+				tickets.splice(i,1);
+				return;
+			}
 		}
 		setTickets(tickets.concat(ticket));
 	}
