@@ -51,12 +51,12 @@ const Login = ({}) => {
 	}
 	return (
 		<>
-			<Header />
+			<Header loggedIn={true} />
 			<MainContainer>
 				<div class={"login-container"}>
 					<MDBContainer>
 						<MDBRow>
-							<MDBCol md="6">
+							<MDBCol md="6" className="mr-auto ml-auto">
 							<form>
 								<p className="h4 text-center mb-4 mt-4">Đăng nhập</p>
 								<label htmlFor="defaultFormLoginEmailEx" className="grey-text">

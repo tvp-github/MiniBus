@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import styled from "styled-components";
 import colors from "../values/colors";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBus, faSync } from "@fortawesome/free-solid-svg-icons";
-import {useHistory} from "react-router-dom";
+import { useHistory } from "react-router-dom";
 const ChooseRouteContainer = styled.div`
 	background-color: ${colors.white};
 	display: flex;
@@ -86,20 +86,37 @@ const MiniName = styled.p`
 const ChooseRoute = ({}) => {
 	const history = useHistory();
 	const [isOW, setIsOW] = useState(true);
-	const _onSubmit = (e)=>{
+	const [fromDate, setFromDate] = useState("");
+	const [toDate, setToDate] = useState("");
+	const refStart = useRef();
+	const refEnd = useRef();
+	const _onSubmit = (e) => {
 		e.preventDefault();
 		console.log("Fix: " + isOW);
 		history.push({
 			pathname: "/booking/step2",
-			isOneWay: isOW
+			isOneWay: isOW,
+			start: refStart.current.value,
+			end: refEnd.current.value,
+			date: fromDate
 		});
-	}
+	};
 	const handleClickOW = () => {
 		setIsOW(true);
-	}
+	};
 	const handleClickTW = () => {
 		console.log("Checked");
 		setIsOW(false);
+	};
+
+	const handleFromDateChange = (e)=>{
+		e.preventDefault();
+		setFromDate(e.target.value);
+	}
+
+	const handleToDateChange = (e)=>{
+		e.preventDefault();
+		setToDate(e.target.value);
 	}
 	return (
 		<ChooseRouteContainer>
@@ -110,23 +127,37 @@ const ChooseRoute = ({}) => {
 				<TitleText>Mua vé trực tuyến</TitleText>
 			</HorizontalContainer>
 			<HorizontalContainer style={{ marginTop: 15, marginBottom: 15 }}>
-				<input type="radio" id="one-way" name="bus-type" onClick = {handleClickOW} />
+				<input
+					type="radio"
+					id="one-way"
+					name="bus-type"
+					onClick={handleClickOW}
+					checked={isOW}
+				/>
 				<RadioLable for="one-way">Một chiều</RadioLable>
-				<input type="radio" id="round-trip" name="bus-type" onClick = {handleClickTW}/>
-				<RadioLable for="round-trip" on>Khứ hồi</RadioLable>
+				<input
+					type="radio"
+					id="round-trip"
+					name="bus-type"
+					onClick={handleClickTW}
+					checked={!isOW}
+				/>
+				<RadioLable for="round-trip" on>
+					Khứ hồi
+				</RadioLable>
 			</HorizontalContainer>
 			<HorizontalContainer style={{ justifyContent: "space-between" }}>
 				<VMiniContainer style={{ width: "26%" }}>
 					<MiniName>Chọn điểm đi</MiniName>
-					<TextInput>
+					<select ref={refStart}>
 						<option selected disabled hidden>
 							Chọn điểm đi
 						</option>
-						<option value="dl">Đà Lạt</option>
-						<option value="vt">Vũng Tàu</option>
-						<option value="tg">Tiền Giang</option>
-						<option value="nt">Ninh Thuận</option>
-					</TextInput>
+						<option value="Đà Lạt">Đà Lạt</option>
+						<option value="Sài Gòn">Sài Gòn</option>
+						<option value="Tiền Giang">Tiền Giang</option>
+						<option value="Vũng Tàu">Vũng Tàu</option>
+					</select>
 				</VMiniContainer>
 				<RoundButtonContainer>
 					<div>
@@ -135,25 +166,25 @@ const ChooseRoute = ({}) => {
 				</RoundButtonContainer>
 				<VMiniContainer style={{ width: "26%" }}>
 					<MiniName>Chọn điểm đến</MiniName>
-					<TextInput>
+					<select ref={refEnd}>
 						<option selected disabled hidden>
 							Chọn điểm đến
 						</option>
-						<option value="dl">Đà Lạt</option>
-						<option value="vt">Vũng Tàu</option>
-						<option value="tg">Tiền Giang</option>
-						<option value="nt">Ninh Thuận</option>
-					</TextInput>
+						<option value="Đà Lạt">Đà Lạt</option>
+						<option value="Sài Gòn">Sài Gòn</option>
+						<option value="Tiền Giang">Tiền Giang</option>
+						<option value="Vũng Tàu">vũng Tàu</option>
+					</select>
 				</VMiniContainer>
 				<VMiniContainer style={{ width: "17%" }}>
 					<MiniName>Chọn ngày đi</MiniName>
-					<DateInput type="date" value="" placeholder="Từ ngày" />
+					<DateInput type="date" value={fromDate} onChange={handleFromDateChange} placeholder="Từ ngày" />
 				</VMiniContainer>
-				<VMiniContainer style={{ width: "17%" }}>
-					<MiniName>Chọn ngày đến</MiniName>
 
-					<DateInput type="date" value="" placeholder="Đến ngày" />
-				</VMiniContainer>
+				{!isOW&&<VMiniContainer style={{ width: "17%" }}>
+					<MiniName>Chọn ngày về</MiniName>
+					<DateInput type="date" value={toDate} onChange={handleToDateChange} placeholder="Đến ngày" />
+				</VMiniContainer>}
 			</HorizontalContainer>
 			<HorizontalContainer>
 				<RightButton onClick={_onSubmit} type="submit" value="Đặt vé" />

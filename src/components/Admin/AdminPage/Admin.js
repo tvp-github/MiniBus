@@ -31,7 +31,7 @@ const Admin = ({ }) => {
     }
     return (
         <>
-            <Header />
+            <Header loggedIn={true} />
             <MainContainer>
 
                 <script src="https://use.fontawesome.com/releases/v5.15.1/js/all.js" data-auto-replace-svg="nest"></script>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import 'font-awesome/css/font-awesome.min.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import axios from 'axios';
@@ -24,6 +24,9 @@ const CarList = ({}) => {
     const handleCloseDelete = () => setShowDelete(false);
     const handleShowDelete = () => setShowDelete(true);
 
+    const numberRef = useRef();
+    const typeRef= useRef();
+
     useEffect(async ()=>{
         try {
             const api = `http://localhost:8000/vehicles`;
@@ -45,7 +48,7 @@ const CarList = ({}) => {
     const handleAddCar = async (e) => {
         e.preventDefault();
         const api = `http://localhost:8000/vehicles`;
-        const res = await axios.post(api, {type: type, number: code},{
+        const res = await axios.post(api, {type: typeRef.current.value, number: numberRef.current.value},{
             headers: {
               Authorization: localStorage.getItem('token')
             }
@@ -81,19 +84,19 @@ const CarList = ({}) => {
                 <div class="form-group row">
                     <label for="staticEmail" class="col-sm-2 col-form-label">Mã xe:</label>
                     <div class="col-sm-10">
-                        <input class="col-sm-8 form-control" type="text" name="name" placeholder="Nhập mã"  />
+                        <input class="col-sm-8 form-control" type="text" name="name" placeholder="Nhập mã" />
                     </div>
                 </div>
                 <div class="form-group row">
                     <label for="staticEmail" class="col-sm-2 col-form-label">Biển số xe:</label>
                     <div class="col-sm-10">
-                        <input class="col-sm-8 form-control" type="text" name="name" placeholder="Nhập biển số xe" onChange={handleChangeCode} value={code} autoFocus={true}/>
+                        <input class="col-sm-8 form-control" type="text" name="name" placeholder="Nhập biển số xe" ref={numberRef}/>
                     </div>
                 </div>
                 <div class="form-group row">
                     <label for="staticEmail" class="col-sm-2 col-form-label" >Loại xe:</label>
                     <div class="col-sm-10">
-                        <input class="col-sm-8 form-control" type="text" name="name" placeholder="Nhập loại xe" onChange={handleChangeType} value={type} autoFocus={true}/>
+                        <input class="col-sm-8 form-control" type="text" name="name" placeholder="Nhập loại xe" ref={typeRef}/>
                     </div>
                 </div>
             </div>
@@ -269,44 +272,6 @@ const CarList = ({}) => {
                 </thead>
 
                 <tbody>
-                    <tr>
-                        <th class="ma-xe">123</th>
-                        <td>51E-152.63</td>
-                        <td>Giường nằm</td>
-                        <td>
-                            <div class="row">
-                                <button class="icon-btn" onClick={handleShowUpdate} data-toggle="tooltip" data-placement="right" title="Sửa thông tin"><i className="fa fa-edit " aria-hidden="true" ></i></button>
-                                <button class="icon-btn" onClick={handleShowDelete} data-toggle="tooltip" data-placement="right" title="Xóa xe"><i className="fa fa-trash " aria-hidden="true" ></i></button>
-                                <button class="icon-btn" onClick={handleShowDetail} data-toggle="tooltip" data-placement="right" title="Xem chi tiết" ><i className="fa fa-align-justify " aria-hidden="true" ></i></button>
-                            </div>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <th class="ma-xe">123</th>
-                        <td>51E-152.63</td>
-                        <td>Phòng nằm</td>
-                        <td>
-                            <div class="row">
-                                <button class="icon-btn" data-toggle="tooltip" data-placement="right" title="Sửa thông tin"><i className="fa fa-edit " aria-hidden="true" ></i></button>
-                                <button class="icon-btn" data-toggle="tooltip" data-placement="right" title="Xóa xe"><i className="fa fa-trash " aria-hidden="true" ></i></button>
-                                <button class="icon-btn" data-toggle="tooltip" data-placement="right" title="Xem chi tiết" ><i className="fa fa-align-justify " aria-hidden="true" ></i></button>
-                            </div>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <th class="ma-xe">123</th>
-                        <td>51E-152.63</td>
-                        <td>Ghế ngồi</td>
-                        <td>
-                            <div class="row">
-                            <button class="icon-btn" data-toggle="tooltip" data-placement="right" title="Sửa thông tin"><i className="fa fa-edit " aria-hidden="true" ></i></button>
-                                <button class="icon-btn" data-toggle="tooltip" data-placement="right" title="Xóa xe"><i className="fa fa-trash " aria-hidden="true" ></i></button>
-                                <button class="icon-btn" data-toggle="tooltip" data-placement="right" title="Xem chi tiết" ><i className="fa fa-align-justify " aria-hidden="true" ></i></button>
-                            </div>
-                        </td>
-                    </tr>
                     {
                         cars.map((item)=>{
                             return(
@@ -316,8 +281,11 @@ const CarList = ({}) => {
                                     <td>{item.type}</td>
                                     <td>
                                         <div class="row">
-                                            <button><i className="fa fa-edit mr-2 col-2" aria-hidden="true"></i></button>
-                                            <button  onClick={()=>{handleDeleteCar(item._id)}}><i className="fa fa-trash mr-2 col-2" aria-hidden="true"></i></button>
+                                            {/* <button className="icon-btn"><i className="fa fa-edit mr-2 col-2" aria-hidden="true"></i></button>
+                                            <button className="icon-btn" onClick={()=>{handleDeleteCar(item._id)}}><i className="fa fa-trash mr-2 col-2" aria-hidden="true"></i></button>
+                                             */}
+                                        <button class="icon-btn" onClick={()=>handleUpdateCar(item._id)} data-toggle="tooltip" data-placement="right" title="Sửa thông tin"><i className="fa fa-edit " aria-hidden="true" ></i></button>
+                                        <button class="icon-btn" onClick={() => handleDeleteCar(item._id)} data-toggle="tooltip" data-placement="right" title="Xóa chuyến đi"><i className="fa fa-trash " aria-hidden="true" ></i></button>
                                         </div>
                                     </td>
                                 </tr>

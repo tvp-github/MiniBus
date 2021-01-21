@@ -50,13 +50,18 @@ const Step2 = (props) => {
 	const [tickets, setTickets] = useState([]);
 	const [ticketsBack, setTicketsBack] = useState([]);
 	console.log("Debug: " , props.location.isOneWay);
+	const start = props.location.start;
+	const end = props.location.end;
+	const date = props.location.date;
 	const oneWay = props.location.isOneWay;
 	const history = useHistory();
-	const handlePickTicket = (ele) => {
-		console.log(ele);
-		let ticket = {pos: "A" + ele};
-		if(tickets.includes(ticket)){
-			return;
+	const handlePickTicket = (ticket) => {
+		console.log(ticket);
+		for(let i = 0; i<tickets.length; i++){
+			if(tickets[i]._id === ticket._id){
+				tickets.splice(i,1);
+				return;
+			}
 		}
 		setTickets(tickets.concat(ticket));
 	}
@@ -88,7 +93,7 @@ const Step2 = (props) => {
 							: { justifyContent: "space-between" }
 					}
 				>
-					<ChooseSeat handleClick={(ele) => handlePickTicket(ele)} tickets ={tickets}/>
+					<ChooseSeat handleClick={(ele) => handlePickTicket(ele)} tickets ={tickets} start={start} end = {end} date={date}/>
 					{!oneWay && <ChooseSeat handleClick={(ele) => handlePickTicketBack(ele)} tickets ={ticketsBack}/>}
 				</HContainer>
 				<HContainer>

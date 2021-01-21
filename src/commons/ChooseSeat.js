@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import colors from "../values/colors";
+import axios from 'axios';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
 	faBus,
@@ -126,45 +127,99 @@ const RedMiniText = styled.p`
 `;
 const ChooseSeat = (props) => {
 	const tickets = props.tickets;
+	const {start, end, date} = props;
 	const {handleClick} = props;
+	const [time, setTime] = useState(null);
+	const [tours, setTours] = useState([]);
+	const [tour, setTour] = useState(null); 
+	const [tourTickets, setTourTickets] = useState([]);
 	const history = useHistory();
 	const _onSubmit = (e) => {
 		e.preventDefault();
-		console.log("Go submit");
-		// history.push("/booking/step2");
 	};
+	useEffect(async ()=>{
+        try {
+            const api = `http://localhost:8000/trips`;
+			const res = await axios.get(api);
+			console.log(res.data.trips);
+			setTours(res.data.trips);
+			handleSearchTour();
+          } catch (err) {
+            console.log(err.response);
+          }
+	},[]);
+	useEffect(async () => {
+		console.log("Get ticket!!!");
+		if(!tour){
+			return;
+		}
+		try {
+            const api = `http://localhost:8000/tickets/trip/${tour._id}`;
+			const res = await axios.get(api);
+			console.log(res);
+			setTourTickets(res.data.tickets);
+        } catch (err) {
+            console.log(err.response);
+        }
+	}, [tour])
+
+	const handleSearchTour = async () => {
+		setTour(searchtour());
+	}
+
+	const searchtour = () => {
+		for(let i=0; i<tours.length; i++){
+			if(tours[i].start === start && tours[i].end === end){
+				return tours[i];
+			} 
+		}
+		return null;
+	}
+	
+	const handlePickTime = (e) => {
+		setTime(e.target.value);
+		handleSearchTour();
+	}
+
 	return (
 		<ChooseRouteContainer>
 			<TitleText>
-				Chuyến ngày <RedSpan>15/12/2020</RedSpan>
+				Chuyến ngày <RedSpan>{date}</RedSpan>
 			</TitleText>
 			<RedFromTo>
-				Sài Gòn <FontAwesomeIcon icon={faLongArrowAltRight} /> Đà Lạt
+				{start}<FontAwesomeIcon icon={faLongArrowAltRight} /> {end}
 			</RedFromTo>
 			<VMiniContainer>
 				<MiniName>Chọn giờ khởi hành</MiniName>
-				<TextInput>
+				<select value={time} onChange={handlePickTime}>
 					<option selected disabled hidden>
 						Chọn giờ khởi hành
 					</option>
-					<option value="dl">12:30</option>
-					<option value="vt">13:30</option>
-					<option value="tg">14:30</option>
-					<option value="nt">15:30</option>
-				</TextInput>
+					<option value="6:00">06:00</option>
+					<option value="12:00">12:00</option>
+					<option value="15:00">15:00</option>
+					<option value="20:00">20:00</option>
+				</select>
 			</VMiniContainer>
 			<VMiniContainer>
 				<MiniName>Chọn ghế</MiniName>
 				<AllSeat>
-					<SeatContainer>
-						{[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((ele, index) => (
-							<Seat key={index} style={{ backgroundColor: colors.mid_grey }} onClick={()=> {console.log(ele);handleClick(ele)}}>
-								<SeatText>A{ele}</SeatText>
-							</Seat>
-						))}
-					</SeatContainer>
+					{
+						tour ? (
+							<SeatContainer>
+								{tourTickets.map((ticket, index) => (
+									<Seat key={index} style={{ backgroundColor: colors.mid_grey }} onClick={()=> {handleClick(ticket)}}>
+										<SeatText>{ticket.posision}</SeatText>
+									</Seat>
+								))}
+							</SeatContainer>
+						):
+						(
+							<div>Không có chuyến xe phù hợp</div>
+						)
+					}
 					<ColorsHint>
- <ColorContainer>
+					 <ColorContainer>
 							<Square
 								style={{ backgroundColor: colors.mid_grey }}
 							/>
@@ -193,8 +248,8 @@ const ChooseSeat = (props) => {
 					<MiniName>Tổng tiền</MiniName>
 				</HContainer>
                 <HContainer>
-							<RedMiniText>{tickets ? tickets.map((item)=>{return item.pos + " "}) : ""}</RedMiniText>
-					<RedMiniText>{tickets  ? tickets.length * 100000 : 0}đ</RedMiniText>
+							<RedMiniText>{tickets ? tickets.map((ticket)=>{return ticket.position + " "}) : ""}</RedMiniText>
+					<RedMiniText>{tickets  ? tickets.length * (tour ? tour.price : 0) : 0}đ</RedMiniText>
 				</HContainer>
 			</VMiniContainer>
 		</ChooseRouteContainer>

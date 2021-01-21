@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import 'font-awesome/css/font-awesome.min.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Modal from 'react-bootstrap/Modal'
@@ -9,19 +9,69 @@ import axios from 'axios';
 const TourList = ({}) => {
     let CarList = [ 'CAR001', 'CAR002', 'CAR003'];
     const [cars, setCars] = useState([]);
+    const [curId, setCurId] = useState("");
+    const [curCar, setCurCar] = useState(null);
     const [showDetail, setShowDetail] = useState(false);
     const handleCloseDetail = () => setShowDetail(false);
     const handleShowDetail = () => setShowDetail(true);
     const [showUpdate, setShowUpdate] = useState(false);
     const handleCloseUpdate = () => setShowUpdate(false);
-    const handleShowUpdate = () => setShowUpdate(true);
+
     const [showAdd, setShowAdd] = useState(false);
     const handleCloseAdd = () => setShowAdd(false);
     const handleShowAdd = () => setShowAdd(true);
     const [showDelete, setShowDelete] = useState(false);
-    const handleCloseDelete = () => setShowDelete(false);
-    const handleShowDelete = () => setShowDelete(true);
+
+    const _start = useRef();
+    const _end = useRef();
+    const _price = useRef();
+    const _car = useRef();
+    const upStart = useRef();
+    const upEnd = useRef();
+    const upPrice = useRef();
+    const upCar = useRef();
+    const timeStart = useRef();
+    const dateStart = useRef();
+    const handleCloseDelete = (id) => {
+        setShowDelete(false);
+    } 
+    const handleShowDelete = (id) =>{
+        console.log(id);
+        setCurId(id);
+        setShowDelete(true);
+    }
+    const handleShowUpdate = (id) => {
+        setCurId(id);
+        setShowUpdate(true);
+    }
     const [tours, setTours] = useState([]);
+    const handleUpdateTour = async()=>{
+        console.log(cars);
+        const model = {};
+        model.vehicle = upCar.current.value;
+        model.time_start = Date.now();
+        model.start = upStart.current.value;
+        model.end = upEnd.current.value;
+        model.driver = "driver";
+        model.price = upPrice.current.value;
+
+        const api = `http://localhost:8000/trips/${curId}`;
+        const res = await axios.put(api, model, {
+            headers: {
+                Authorization: localStorage.getItem('token')
+            }
+        });
+        console.log(res);
+        for(let i = 0 ; i < tours.length ; i++){
+            if(tours[i]._id === curId){
+                tours[i].start = model.start;
+                tours[i].end = model.end;
+                tours[i].price = model.price;
+            }
+        }
+        setTours(tours.slice());
+        setShowUpdate(false);
+    }
     useEffect(async ()=>{
         try {
             const api = `http://localhost:8000/vehicles`;
@@ -40,17 +90,19 @@ const TourList = ({}) => {
           } catch (err) {
             console.log(err.response);
           }
-    },[])
+    },[setTours])
 
     const handleAddTour = async () => {
+        console.log(cars);
         const model = {};
-        model.vehicle = cars[0]._id;
-        model.time_start = Date.now();
-        model.start = "Sài Gòn";
-        model.end = "Cần Thơ";
+        model.vehicle = _car.current.value;
+        model.start = _start.current.value;
+        model.end = _end.current.value;
         model.driver = "driver";
-        model.price = 100000;
-
+        model.price = _price.current.value;
+        let temp1 = dateStart.current.value.split("-");
+        let temp2 = timeStart.current.value.split(":")
+        model.time_start = new Date(Date.UTC(temp1[0],temp1[1],temp1[2],temp2[0], temp2[1]));
         const api = `http://localhost:8000/trips`;
         const res = await axios.post(api, model, {
             headers: {
@@ -61,7 +113,40 @@ const TourList = ({}) => {
         let newTrip = res.data.trip;
         console.log(tours);
         setTours(tours.concat(newTrip));
-        handleCloseAdd();
+        const apiTicket = `http://localhost:8000/tickets`;
+        for(let i = 0; i < 10 ; i ++ ){
+            let ticket = {};
+            ticket.position = "A" + (i+1);
+            ticket.trip = newTrip._id;
+            await axios.post(apiTicket, ticket,{
+                headers: {
+                    Authorization: localStorage.getItem('token')
+                }
+            });
+        }
+        setShowAdd(false);
+    }
+
+    const handleDeleteTour = async () => {
+        const api = `http://localhost:8000/trips/${curId}`;
+        const res = await axios.delete(api,{
+            headers: {
+              Authorization: localStorage.getItem('token')
+            }
+        });
+        let newTours = tours;
+        for(let i = 0 ; i < tours.length ; i++){
+            if(tours[i]._id === curId){
+                newTours.splice(i, 1);
+            }
+        }
+        setTours(newTours.slice());
+        setShowDelete(false);
+    }
+
+
+    const handleSelectCar = (e) => {
+        setCurCar(e.target.value);
     }
 
     const TourAdd = ({}) => {
@@ -70,41 +155,43 @@ const TourList = ({}) => {
             <div class="form-group row">
                 <label for="staticEmail" class="col-sm-2 col-form-label">Điểm đi:</label>
                 <div class="col-sm-10">
-                    <input class="col-sm-8 form-control" type="text" name="name" placeholder="Nhập điểm đi" />
+                    <input class="col-sm-12 form-control" type="text" name="name" placeholder="Nhập điểm đi" ref={_start} />
                 </div>
             </div>
             <div class="form-group row">
                 <label for="staticEmail" class="col-sm-2 col-form-label">Điểm đến:</label>
                 <div class="col-sm-10">
-                    <input class="col-sm-8 form-control" type="text" name="name" placeholder="Nhập điểm đến" />
+                    <input class="col-sm-12 form-control" type="text" name="name" placeholder="Nhập điểm đến" ref={_end}/>
                 </div>
             </div>
             <div class="form-group row">
                 <label for="staticEmail" class="col-sm-2 col-form-label">Ngày đi:</label>
-                <div class="col-sm-10 row">
-                    <input class="col-sm-2 ml-3 mr-2 form-control" type="time" name="name"  />
-                    <input class="col-sm-6 form-control" type="date" name="name"  />
+                <div class="col-sm-10">
+                    <input class="col-sm-3 form-control" type="time" name="name" ref={timeStart} />
+                    <input class="col-sm-12 form-control mt-2" type="date" name="name" ref={dateStart} />
                 </div>
             </div>
             <div class="form-group row">
                 <label for="staticEmail" class="col-sm-2 col-form-label">Giá vé:</label>
                 <div class="col-sm-10">
-                    <input class="col-sm-8 form-control" type="text" name="name" placeholder="Nhập giá vé" />
+                    <input class="col-sm-12 form-control" type="text" name="name" placeholder="Nhập giá vé" ref={_price}/>
                 </div>
             </div>
             <div class="form-group row">
                 <label for="staticEmail" class="col-sm-2 col-form-label">Chọn xe:</label>
                 <div class="col-sm-10">
-                    <Dropdown>
-                        <Dropdown.Toggle id="dropdown-basic">
-                            Tất cả trạng thái
-                        </Dropdown.Toggle>
-                        <Dropdown.Menu>
-                            <Dropdown.Item >Action</Dropdown.Item>
-                            <Dropdown.Item>Another action</Dropdown.Item>
-                            <Dropdown.Item>Something else</Dropdown.Item>
-                        </Dropdown.Menu>
-                    </Dropdown>
+                <select ref={_car}>
+					<option selected disabled hidden>
+						Chọn xe
+					</option>
+					{
+                        cars.map((item)=>{
+                            return(
+                            <option value={item._id}>{item.number}</option>
+                            )
+                        })
+                    }
+				</select>
                 </div>
             </div>
           
@@ -117,41 +204,43 @@ const TourList = ({}) => {
             <div class="form-group row">
                 <label for="staticEmail" class="col-sm-2 col-form-label">Điểm đi:</label>
                 <div class="col-sm-10">
-                    <input class="col-sm-8 form-control" type="text" name="name" placeholder="Nhập điểm đi" value={'Đà Lạt'} />
+                    <input class="col-sm-8 form-control" type="text" name="name" placeholder="Nhập điểm đi" ref={upStart} />
                 </div>
             </div>
             <div class="form-group row">
                 <label for="staticEmail" class="col-sm-2 col-form-label">Điểm đến:</label>
                 <div class="col-sm-10">
-                    <input class="col-sm-8 form-control" type="text" name="name" placeholder="Nhập điểm đến" value={'Sài Gòn'}/>
+                    <input class="col-sm-8 form-control" type="text" name="name" placeholder="Nhập điểm đến" ref={upEnd}/>
                 </div>
             </div>
             <div class="form-group row">
                 <label for="staticEmail" class="col-sm-2 col-form-label">Ngày đi:</label>
                 <div class="col-sm-10 row">
-                    <input class="col-sm-3 ml-3 mr-2 form-control" type="time" name="name" value={'08:00'} />
-                    <input class="col-sm-6 form-control" type="date" name="name" value={'24/06/2020'} />
+                    <input class="col-sm-3 ml-3 mr-2 form-control" type="time"/>
+                    <input class="col-sm-6 form-control" type="date"/>
                 </div>
             </div>
             <div class="form-group row">
                 <label for="staticEmail" class="col-sm-2 col-form-label">Giá vé:</label>
                 <div class="col-sm-10">
-                    <input class="col-sm-8 form-control" value={'240.000'} type="text" name="name" placeholder="Nhập giá vé" />
+                    <input class="col-sm-8 form-control" type="text" name="name" placeholder="Nhập giá vé" ref={upPrice}/>
                 </div>
             </div>
             <div class="form-group row">
                 <label for="staticEmail" class="col-sm-2 col-form-label">Loại xe:</label>
                 <div class="col-sm-10">
-                    <Dropdown>
-                        <Dropdown.Toggle id="dropdown-basic">
-                            Giường nằm 34
-                        </Dropdown.Toggle>
-                        <Dropdown.Menu>
-                            <Dropdown.Item >Action</Dropdown.Item>
-                            <Dropdown.Item>Another action</Dropdown.Item>
-                            <Dropdown.Item>Something else</Dropdown.Item>
-                        </Dropdown.Menu>
-                    </Dropdown>
+                <select ref={upCar}>
+					<option selected disabled hidden>
+						Chọn xe
+					</option>
+					{
+                        cars.map((item)=>{
+                            return(
+                            <option value={item._id}>{item.number}</option>
+                            )
+                        })
+                    }
+				</select>
                 </div>
             </div>
           
@@ -216,7 +305,7 @@ const TourList = ({}) => {
                     <Button variant="secondary" onClick={handleCloseDelete}>
                         Close
                     </Button>
-                    <Button variant="primary" onClick={handleCloseDelete}>
+                    <Button variant="primary" onClick={handleDeleteTour}>
                         Delete
                     </Button>
                 </Modal.Footer>
@@ -282,7 +371,7 @@ const TourList = ({}) => {
                     <Button variant="secondary" onClick={handleCloseUpdate}>
                         Close
                     </Button>
-                    <Button variant="primary" onClick={handleCloseUpdate}>
+                    <Button variant="primary" onClick={handleUpdateTour}>
                         Update
                     </Button>
                 </Modal.Footer>
@@ -309,43 +398,6 @@ const TourList = ({}) => {
                         <th scope="col">Thao tác</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <tr>
-                        <th class="ma-chuyen-xe">123</th>
-                        <td>TP.Hồ Chí Minh</td>
-                        <td>Đà Lạt</td>
-                        <td>22h 25/12/2020</td>
-                        <td>120.000</td>
-                        <td>Giường nằm 34</td>
-                        <td>
-                            <div class="row">
-                                <button class="icon-btn" onClick={handleShowUpdate} data-toggle="tooltip" data-placement="right" title="Sửa thông tin"><i className="fa fa-edit " aria-hidden="true" ></i></button>
-                                <button class="icon-btn" onClick={handleShowDelete} data-toggle="tooltip" data-placement="right" title="Xóa chuyến đi"><i className="fa fa-trash " aria-hidden="true" ></i></button>
-                                <button class="icon-btn"  onClick={handleShowDetail} data-toggle="tooltip" data-placement="right" title="Xem chi tiết" ><i className="fa fa-align-justify " aria-hidden="true" ></i></button>
-                            </div>
-                        </td>
-                        
-                    </tr>
-                </tbody>
-
-                <tbody>
-                    <tr>
-                        <th class="ma-chuyen-xe">123</th>
-                        <td>TP.Hồ Chí Minh</td>
-                        <td>Đà Lạt</td>
-                        <td>22h 25/12/2020</td>
-                        <td>120.000</td>
-                        <td>Giường nằm 34</td>
-                        <td>
-                            <div class="row">
-                                <button class="icon-btn" onClick={handleShowUpdate} data-toggle="tooltip" data-placement="right" title="Sửa thông tin"><i className="fa fa-edit " aria-hidden="true" ></i></button>
-                                <button class="icon-btn" onClick={handleShowDelete} data-toggle="tooltip" data-placement="right" title="Xóa chuyến đi"><i className="fa fa-trash " aria-hidden="true" ></i></button>
-                                <button class="icon-btn"  onClick={handleShowDetail} data-toggle="tooltip" data-placement="right" title="Xem chi tiết" ><i className="fa fa-align-justify " aria-hidden="true" ></i></button>
-                            </div>
-                        </td>
-                        
-                    </tr>
-                </tbody>
                 {
                     tours.map((item)=>{
                         return(
@@ -354,13 +406,13 @@ const TourList = ({}) => {
                                 <th class="ma-chuyen-xe">{item._id}</th>
                                 <td>{item.start}</td>
                                 <td>{item.end}</td>
-                                <td>{item.time_start.slice(0,10)}</td>
+                                <td>{item.time_start ? item.time_start : ""}</td>
                                 <td>{item.price}</td>
-                                <td>{item.vehicle.type}</td>
+                                <td>{item.vehicle ? item.vehicle.type : "Giường nằm"}</td>
                                 <td>
                                     <div class="row">
-                                        <button class="icon-btn" onClick={handleShowUpdate} data-toggle="tooltip" data-placement="right" title="Sửa thông tin"><i className="fa fa-edit " aria-hidden="true" ></i></button>
-                                        <button class="icon-btn" onClick={handleShowDelete} data-toggle="tooltip" data-placement="right" title="Xóa chuyến đi"><i className="fa fa-trash " aria-hidden="true" ></i></button>
+                                        <button class="icon-btn" onClick={()=>handleShowUpdate(item._id)} data-toggle="tooltip" data-placement="right" title="Sửa thông tin"><i className="fa fa-edit " aria-hidden="true" ></i></button>
+                                        <button class="icon-btn" onClick={() => handleShowDelete(item._id)} data-toggle="tooltip" data-placement="right" title="Xóa chuyến đi"><i className="fa fa-trash " aria-hidden="true" ></i></button>
                                         <button class="icon-btn"  onClick={handleShowDetail} data-toggle="tooltip" data-placement="right" title="Xem chi tiết" ><i className="fa fa-align-justify " aria-hidden="true" ></i></button>
                                     </div>
                                 </td>
