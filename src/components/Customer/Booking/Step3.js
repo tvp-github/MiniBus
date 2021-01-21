@@ -113,11 +113,15 @@ const Step3 = (props) => {
 	const [email, setEmail] = useState("");
 	const tickets = props.location.tickets;
 	const ticketsBack = props.location.ticketsBack;
+	const price = props.location.price;
+	console.log("BBBBBBBBBBBBB");
+	console.log(props.location.price);
 	const handleNext = () => {
 		history.push({
 			pathname: "/booking/step4",
 			tickets: tickets,
 			ticketsBack: ticketsBack,
+			price: price,
 			name: name,
 			phone: phone,
 			email: email

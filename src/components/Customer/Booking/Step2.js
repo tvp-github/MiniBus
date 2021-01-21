@@ -49,12 +49,17 @@ const ButtonText = styled.p`
 const Step2 = (props) => {
 	const [tickets, setTickets] = useState([]);
 	const [ticketsBack, setTicketsBack] = useState([]);
+	const [price, setPrice] = useState(0);
 	console.log("Debug: " , props.location.isOneWay);
 	const start = props.location.start;
 	const end = props.location.end;
 	const date = props.location.date;
 	const oneWay = props.location.isOneWay;
 	const history = useHistory();
+	const handleChangePrice = (price) => {
+		console.log("PRICEEEEE: ", price);
+		setPrice(price);
+	}
 	const handlePickTicket = (ticket) => {
 		console.log(ticket);
 		for(let i = 0; i<tickets.length; i++){
@@ -76,7 +81,8 @@ const Step2 = (props) => {
 		history.push({
 			pathname: '/booking/step3',
 			tickets: tickets,
-			ticketsBack: ticketsBack
+			ticketsBack: ticketsBack,
+			price: price
 		})
 	}
 	return (
@@ -93,7 +99,7 @@ const Step2 = (props) => {
 							: { justifyContent: "space-between" }
 					}
 				>
-					<ChooseSeat handleClick={(ele) => handlePickTicket(ele)} tickets ={tickets} start={start} end = {end} date={date}/>
+					<ChooseSeat changePrice={(price) => handleChangePrice(price)} handleClick={(ele) => handlePickTicket(ele)} tickets ={tickets} start={start} end = {end} date={date} price={price}/>
 					{!oneWay && <ChooseSeat handleClick={(ele) => handlePickTicketBack(ele)} tickets ={ticketsBack}/>}
 				</HContainer>
 				<HContainer>

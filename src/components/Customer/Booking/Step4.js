@@ -126,6 +126,9 @@ const Step4 = (props) => {
 	const name = props.location.name;
 	const phone = props.location.phone;
 	const email = props.location.email;
+	const price = props.location.price;
+	console.log("AAAAAAAAAAAAAA");
+	console.log(price);
 	return (
 		<>
 			<Header />
@@ -168,9 +171,9 @@ const Step4 = (props) => {
 						<Content style={s(20)}>Ngày đi:</Content>
 						<Content style={s(30, true)}>16/12/2020</Content>
 						<Content style={s(20)}>Số ghế:</Content>
-						<Content style={s(30, true)}>{tickets.map((item) => item.pos + "  ")}</Content>
+						<Content style={s(30, true)}>{tickets.length}</Content>
 						<Content style={s(20)}>Tổng tiền:</Content>
-						<Content style={s(30, true)}>{100000 * tickets.length}đ</Content>
+						<Content style={s(30, true)}>{tickets.length * price}đ</Content>
 					</SectionContent>
 					<SectionTitle>
 						<ContentTitle>Thông tin chuyến về</ContentTitle>
@@ -191,7 +194,7 @@ const Step4 = (props) => {
 					</SectionContent>
 					<SectionTitle style={{ justifyContent: "flex-end" }}>
 						<ContentTitle>Tổng tiền:</ContentTitle>
-						<RedSpanPrice>{100000*(ticketsBack.length + tickets.length)}đ</RedSpanPrice>
+						<RedSpanPrice>{tickets.length * price}đ</RedSpanPrice>
 					</SectionTitle>
 					<SectionContent>
 						<Content>Phương thức thanh toán:</Content>
