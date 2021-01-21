@@ -33,6 +33,24 @@ const OrderList = ({}) => {
     const handleDeleteOrder = () =>{
         handleCloseDelete()
     }
+    const handleConfirm =  async(id) => {
+        const api = `http://localhost:8000/bills/${id}`;
+        let order;
+        for(let i=0; i< orders.length; i++){
+            if(orders[i]._id === id){
+                order = orders[i];
+            }
+        }
+        if(!order){
+            return;
+        }
+        order.status = true;
+        const res = await axios.put(api, order, {
+            headers: {
+                Authorization: localStorage.getItem('token')
+            }
+        });
+    }
     const OrderDetail = ({}) => {
         return(
             <div>
@@ -230,7 +248,7 @@ const OrderList = ({}) => {
                                                     <td>
                                                         {
                                                             !item.status ?
-                                                            <button class="confirm-btn">Xác nhận thanh toán</button>:
+                                                            <button class="confirm-btn" onClick={()=>{handleConfirm(item._id)}}>Xác nhận thanh toán</button>:
                                                             null
                                                         }
                                                     </td>

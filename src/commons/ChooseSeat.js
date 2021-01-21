@@ -149,6 +149,9 @@ const ChooseSeat = (props) => {
             console.log(err.response);
           }
 	},[]);
+	useEffect(()=>{
+		handleSearchTour();
+	},[time])
 	useEffect(async () => {
 		if(!tour){
 			return;
@@ -178,8 +181,21 @@ const ChooseSeat = (props) => {
 	},[tour])
 
 	const searchtour = () => {
+		if(!time){
+			return;
+		}
+		let sDate = date.split("-");
+		console.log(sDate);
+		let sTime = time ? time.split(":") : null;
+		console.log(sTime);
+		let timeStart = new Date(Date.UTC(sDate[0],sDate[1],sDate[2],sTime[0], sTime[1]));
+		let miStart = timeStart.getTime();
 		for(let i=0; i<tours.length; i++){
-			if(tours[i].start === start && tours[i].end === end){
+			console.log("Cal", miStart);
+			let tourTime = new Date(tours[i].time_start);
+			let miTour = tourTime.getTime();
+			console.log("Time server: " + miTour);
+			if(tours[i].start === start && tours[i].end === end && miStart === miTour){
 				return tours[i];
 			} 
 		}
@@ -188,7 +204,7 @@ const ChooseSeat = (props) => {
 	
 	const handlePickTime = (e) => {
 		setTime(e.target.value);
-		handleSearchTour();
+		// handleSearchTour();
 	}
 
 	return (
@@ -205,7 +221,7 @@ const ChooseSeat = (props) => {
 					<option selected disabled hidden>
 						Chọn giờ khởi hành
 					</option>
-					<option value="6:00">06:00</option>
+					<option value="06:00">06:00</option>
 					<option value="12:00">12:00</option>
 					<option value="15:00">15:00</option>
 					<option value="20:00">20:00</option>

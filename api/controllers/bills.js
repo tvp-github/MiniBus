@@ -61,9 +61,9 @@ async function createBill(req, res) {
 }
 
 async function updateBillById(req, res) {
+  console.log("update bill");
   try {
     await Bill.findByIdAndUpdate(req.params.id, req.body);
-
     res.json({
       msg: 'Update bill success'
     });
