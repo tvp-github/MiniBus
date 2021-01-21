@@ -30,7 +30,8 @@ const TourList = ({}) => {
     const upEnd = useRef();
     const upPrice = useRef();
     const upCar = useRef();
-
+    const timeStart = useRef();
+    const dateStart = useRef();
     const handleCloseDelete = (id) => {
         setShowDelete(false);
     } 
@@ -95,12 +96,13 @@ const TourList = ({}) => {
         console.log(cars);
         const model = {};
         model.vehicle = _car.current.value;
-        model.time_start = Date.now();
         model.start = _start.current.value;
         model.end = _end.current.value;
         model.driver = "driver";
         model.price = _price.current.value;
-
+        let temp1 = dateStart.current.value.split("-");
+        let temp2 = timeStart.current.value.split(":")
+        model.time_start = new Date(Date.UTC(temp1[0],temp1[1],temp1[2],temp2[0], temp2[1]));
         const api = `http://localhost:8000/trips`;
         const res = await axios.post(api, model, {
             headers: {
@@ -153,26 +155,26 @@ const TourList = ({}) => {
             <div class="form-group row">
                 <label for="staticEmail" class="col-sm-2 col-form-label">Điểm đi:</label>
                 <div class="col-sm-10">
-                    <input class="col-sm-8 form-control" type="text" name="name" placeholder="Nhập điểm đi" ref={_start} />
+                    <input class="col-sm-12 form-control" type="text" name="name" placeholder="Nhập điểm đi" ref={_start} />
                 </div>
             </div>
             <div class="form-group row">
                 <label for="staticEmail" class="col-sm-2 col-form-label">Điểm đến:</label>
                 <div class="col-sm-10">
-                    <input class="col-sm-8 form-control" type="text" name="name" placeholder="Nhập điểm đến" ref={_end}/>
+                    <input class="col-sm-12 form-control" type="text" name="name" placeholder="Nhập điểm đến" ref={_end}/>
                 </div>
             </div>
             <div class="form-group row">
                 <label for="staticEmail" class="col-sm-2 col-form-label">Ngày đi:</label>
-                <div class="col-sm-10 row">
-                    <input class="col-sm-2 ml-3 mr-2 form-control" type="time" name="name"  />
-                    <input class="col-sm-6 form-control" type="date" name="name"  />
+                <div class="col-sm-10">
+                    <input class="col-sm-3 form-control" type="time" name="name" ref={timeStart} />
+                    <input class="col-sm-12 form-control mt-2" type="date" name="name" ref={dateStart} />
                 </div>
             </div>
             <div class="form-group row">
                 <label for="staticEmail" class="col-sm-2 col-form-label">Giá vé:</label>
                 <div class="col-sm-10">
-                    <input class="col-sm-8 form-control" type="text" name="name" placeholder="Nhập giá vé" ref={_price}/>
+                    <input class="col-sm-12 form-control" type="text" name="name" placeholder="Nhập giá vé" ref={_price}/>
                 </div>
             </div>
             <div class="form-group row">
@@ -214,8 +216,8 @@ const TourList = ({}) => {
             <div class="form-group row">
                 <label for="staticEmail" class="col-sm-2 col-form-label">Ngày đi:</label>
                 <div class="col-sm-10 row">
-                    <input class="col-sm-3 ml-3 mr-2 form-control" type="time" name="name" value={'08:00'} />
-                    <input class="col-sm-6 form-control" type="date" name="name" value={'24/06/2020'} />
+                    <input class="col-sm-3 ml-3 mr-2 form-control" type="time"/>
+                    <input class="col-sm-6 form-control" type="date"/>
                 </div>
             </div>
             <div class="form-group row">

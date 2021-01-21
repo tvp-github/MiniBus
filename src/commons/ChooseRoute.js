@@ -104,7 +104,7 @@ const ChooseRoute = ({}) => {
 	};
 	const handleClickTW = () => {
 		console.log("Checked");
-		setIsOW(true);
+		setIsOW(false);
 	};
 
 	const handleFromDateChange = (e)=>{
@@ -130,6 +130,7 @@ const ChooseRoute = ({}) => {
 					id="one-way"
 					name="bus-type"
 					onClick={handleClickOW}
+					checked={isOW}
 				/>
 				<RadioLable for="one-way">Một chiều</RadioLable>
 				<input
@@ -137,6 +138,7 @@ const ChooseRoute = ({}) => {
 					id="round-trip"
 					name="bus-type"
 					onClick={handleClickTW}
+					checked={!isOW}
 				/>
 				<RadioLable for="round-trip" on>
 					Khứ hồi
@@ -176,10 +178,11 @@ const ChooseRoute = ({}) => {
 					<MiniName>Chọn ngày đi</MiniName>
 					<DateInput type="date" value={fromDate} onChange={handleFromDateChange} placeholder="Từ ngày" />
 				</VMiniContainer>
-				<VMiniContainer style={{ width: "17%" }}>
-					<MiniName>Chọn ngày đến</MiniName>
+
+				{!isOW&&<VMiniContainer style={{ width: "17%" }}>
+					<MiniName>Chọn ngày về</MiniName>
 					<DateInput type="date" value={toDate} onChange={handleToDateChange} placeholder="Đến ngày" />
-				</VMiniContainer>
+				</VMiniContainer>}
 			</HorizontalContainer>
 			<HorizontalContainer>
 				<RightButton onClick={_onSubmit} type="submit" value="Đặt vé" />

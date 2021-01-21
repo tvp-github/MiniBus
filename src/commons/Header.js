@@ -40,7 +40,7 @@ const Header = ({}) => {
 		<HeaderContainer>
 			<InsideContainer style={{ paddingLeft: 80 }}>
 				<a>
-					<img src={HeaderLofo} alt="Logo" />
+					<img onClick={()=>history.push("/")} src={HeaderLofo} alt="Logo" />
 				</a>
 			</InsideContainer>
 			<InsideContainer>
